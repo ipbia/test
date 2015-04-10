@@ -1,0 +1,1 @@
+<?php	return array ( 0 => 'id', 1 => 'token', 2 => 'cid', 3 => 'pid', 4 => 'is_liked', 5 => 'is_collected', 6 => 'wecha_id', '_autoinc' => true, '_pk' => 'id', '_type' => array ( 'id' => 'int(10) unsigned', 'token' => 'varchar(60)', 'cid' => 'int(10)', 'pid' => 'int(10) unsigned', 'is_liked' => 'varchar(5)', 'is_collected' => 'varchar(5)', 'wecha_id' => 'varchar(60)', ), ); ?>

@@ -1,0 +1,1 @@
+<?php	return array ( 0 => 'id', 1 => 'name', 2 => 'url', 3 => 'img', 4 => 'status', 5 => 'agentid', '_autoinc' => true, '_pk' => 'id', '_type' => array ( 'id' => 'int(11)', 'name' => 'varchar(60)', 'url' => 'char(255)', 'img' => 'char(200)', 'status' => 'varchar(1)', 'agentid' => 'int(10)', ), ); ?>
