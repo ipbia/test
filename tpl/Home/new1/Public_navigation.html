@@ -1,0 +1,29 @@
+<div class="header-nav">
+	<ul>
+		<li>
+			<a href="/" <if condition="(ACTION_NAME eq 'index')"> class="active"</if>>首页</a>
+		</li>
+		<li>
+			<a href="{pigcms::U('Home/Index/solution')}" <eq name="ACTION_NAME" value="solution">class="active"</eq>>经典案例</a>
+		</li>
+<!-- 		<li> -->
+<!-- 			<a href="{pigcms::U('Home/Index/navigation')}" <eq name="ACTION_NAME" value="navigation">class="active"</eq>>功能导航</a> -->
+<!-- 		</li> -->
+		<li>
+			<a href="{pigcms::U('Home/Index/develop')}" <eq name="ACTION_NAME" value="develop">class="active"</eq>>定制开发</a>
+		</li>
+		<li>
+			<a href="{pigcms::U('Home/Index/operate')}" <eq name="ACTION_NAME" value="operate">class="active"</eq>>代运营</a>
+		</li>
+		<li>
+			<a href="{pigcms::U('Home/Index/price')}" <eq name="ACTION_NAME" value="price">class="active"</eq>>资费说明</a>
+		</li>
+<!-- 		<li> -->
+<!-- 			<a href="{pigcms::U('Home/Index/spread')}" <eq name="ACTION_NAME" value="spread">class="active"</eq>>渠道代理</a> -->
+<!-- 		</li> -->
+		
+		<li>
+			<a href="{pigcms::U('Home/Index/about')}" <eq name="ACTION_NAME" value="about">class="active"</eq>>关于我们</a>
+		</li>
+	</ul>
+</div>
