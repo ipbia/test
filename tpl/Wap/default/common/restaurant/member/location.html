@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<meta content="yes" name="apple-mobile-web-app-capable">
+		<meta content="black" name="apple-mobile-web-app-status-bar-style">
+		<meta content="telephone=no" name="format-detection">
+		<title>找到我们</title>
+		<link rel="stylesheet" type="text/css" href="http://static.weiwubao.com/asset/lib/css/base.css">
+		<link rel="stylesheet" type="text/css" href="http://static.weiwubao.com/asset/apps/plugins/vip_v3/css/main.css">
+		<script type="text/javascript" src="http://api.map.baidu.com/api?key=&v=1.1&services=true"></script>
+    </head>
+    <body class="oh">
+		<div class="findus_box" id="findus_box">
+			<div style="z-index:99999">
+				<header class="findus_header" style="z-index:9999"> 
+					<a href="/site/index/index" class="white_left f-fl"></a>
+					<a href="javascript:;" class="white_more f-fr" id="white_more" data-state="0"></a>
+				</header>
+			</div>
+			<article class="findus_article">
+				<section class="findus_top"></section>
+				<section class="findus_con">
+					<iframe style="width:100%;height:0px;top: -16px;position: absolute;z-index: 1;" id="iframeBaiDuMap" src="http://api.map.baidu.com/marker?location=29.585909,106.549463&title=重庆市江北区九街高屋西区一层&content=重庆市江北区九街高屋西区一层&output=html&src=中恒久联|微务宝">
+					</iframe>
+				</section>
+			</article>
+		</div>
+
+		<aside class="findus_aside" id="findus_aside">
+			<nav class="findus_nav">
+				<dl>
+					<dt>更多地址</dt>
+					<dd onclick="changMapURL(this)" data-mapURL="http://api.map.baidu.com/marker?location=29.585909,106.549463&title=重庆市江北区九街高屋西区一层&content=重庆市江北区九街高屋西区一层&output=html&src=中恒久联|微务宝">总店</dd>
+															<dd onclick="changMapURL(this)" data-mapURL="http://api.map.baidu.com/marker?location=29.614199,106.514731&title=渝北区财富中心湖心岛&content=渝北区财富中心湖心岛&output=html&src=中恒久联|微务宝">BG2</dd>
+														</dl>
+			</nav>
+		</aside>
+		<script src="http://static.weiwubao.com/asset/lib/js/jquery-1.11.0.min.js"></script>
+		<script src="http://static.weiwubao.com/asset/lib/js/ibox.js"></script>
+		<script src="http://static.weiwubao.com/asset/lib/js/wechat.api.js"></script>
+		<script src="http://static.weiwubao.com/asset/apps/plugins/vip_v3/js/main.js"></script>
+		<script>
+					$(document).ready(function(e) {
+						$("#iframeBaiDuMap").css("height", (parseInt($(window).height() - $(".findus_top").height()) + 50));
+
+						if ($("#zongDian").attr("mapURL") != null || $("#zongDian").attr("mapURL") != "") {
+							$("#iframeBaiDuMap").attr("src", $("#zongDian").attr("mapURL"));
+						}
+					});
+
+					function changMapURL(thisItem) {
+						var content = thisItem.getAttribute("data-mapURL");
+						//var content = content.substring(parseInt(content.indexOf("<a href='")+9),parseInt(content.indexOf('>'))-1);
+						$("#iframeBaiDuMap").attr("src", content);
+					}
+					//初始化
+					main.FindUs();
+		</script>
+		<script type="text/javascript">
+			var wechat = new wechatAPI();
+			/*****隐藏工具条*****/
+			wechat.hideBottomTool();
+			wechat.hideTopTool();
+		</script>
+    </body>
+</html>

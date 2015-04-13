@@ -1,0 +1,94 @@
+<include file="Restaurant:header"/>
+
+<div class="container" id="j-container" ms-controller="App">
+    
+<include file="Restaurant:orderNavigator"/>
+
+<!-- S 主体内容 -->
+<div class="g-main" id="j-main">
+
+    <div class="rongqi">
+        <div class="j-content2" ms-controller="Collect">
+
+            <!-- S 点餐记录 -->
+            <div class="shoucang">
+                <div class="shoucang-hd f-cb">
+                    <div class="">我的收藏<p style="font-size:1.2rem; color:#9d8d83; margin-top:5px;">请选择收藏餐品，可直接提交订单埋单！</p></div>
+                </div>
+                <div class="shoucang-bd f-cb">
+                    <ul class="j-shoucangItemsList">
+                        <li ms-class="active:selected(el.id)" ms-repeat="goods">
+                            <div class="items">
+                                <div class="col-1">
+                                    <p>{%el.title%}</p>
+                                    <p class="c-primary1">价格：￥{%$defaultSpec(el.id).price%}</p>
+                                </div>
+                                <div class="col-2">
+                                    <a class="zt-xz" href="javascript:;" ms-on-click="onTap(el.id, $defaultSpec(el.id).id, $defaultSpec(el.id).price, el, $defaultSpec(el.id))"></a>
+                                </div>
+                                <div class="col-3">
+                                    <a class="zt-del" href="javascript:;" ms-on-click="remove(el.id, el.goods_id)"></a>
+                                </div>
+                            </div>
+
+                        </li>
+                    </ul>
+                </div>
+                <div class="shoucang-ft">
+                    <!--<div class="payChoose">-->
+                        <!--<ul class="f-cb">-->
+                            <!--<li class="choose1">-->
+                                <!--<a class="u-btn" href="javascript:;"><span>加载更多</span></a>-->
+                            <!--</li>-->
+                            <!--<li class="choose2">-->
+                                <!--<a class="u-btn u-btn2" href="javascript:;"><span>提交订单</span></a>-->
+                            <!--</li>-->
+                        <!--</ul>-->
+                    <!--</div>-->
+                    <div class="u-btnBox f-tac mt20" ms-if="goods.size() > 0">
+                        <a class="u-btn u-btn2" href="javascript:;" ms-on-click="addToCart"><span>提交订单</span></a>
+                    </div>
+                </div>
+            </div>
+            <!-- E 点餐记录 -->
+
+        </div>
+    </div>
+
+
+</div>
+<!-- E 主体内容 -->
+
+
+</div>
+
+<include file="Restaurant:publicjs"/>
+<script type="text/javascript" src="{pigcms::RES}/restaurant/default/collect.js?1428384501"></script>
+<script>
+    avalon.vm('Collect').$init();
+    App.on(App.event.AddCollectToCart, function(next) {
+        next();
+        location.href = App.url.OrderCheck;
+    });
+    App.on(App.event.DelMemberCollect, function(next) {
+        ETMsg.confirm('提示', '确认删除吗?', function() {
+            next();
+            ETMsg.hide();
+        });
+    });
+</script>
+
+</body>
+<script type="text/javascript">
+window.shareData = {  
+            "moduleName":"Restaurant",
+            "moduleID":"{pigcms:$_GET['id']|intval}",
+            "imgUrl": "{pigcms:$company.logourl}", 
+            "timeLineLink": "{pigcms::C('site_url')}{pigcms::U('Restaurant/orderCollect',array('token'=>$_GET['token']))}",
+            "sendFriendLink": "{pigcms::C('site_url')}{pigcms::U('Restaurant/orderCollect',array('token'=>$_GET['token']))}",
+            "tTitle": "{pigcms:$metaTitle}",
+            "tContent": "{pigcms:$metaContent}""
+        };
+</script>
+{pigcms:$shareScript}
+</html>

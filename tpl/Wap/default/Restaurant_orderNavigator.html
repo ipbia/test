@@ -1,0 +1,39 @@
+<div class="g-side" id="j-side">
+    <div id="wapper1" class="wapper ">
+        <div class="wapper-inner j-content1">
+            <div class="subSideMenu j-subSideMenu" style="display:block;">
+                <ul class="f-n">
+                    <li <if condition="(ACTION_NAME  eq 'orderCheck') ">class="active"</if>>
+                        <a href="{pigcms::U('Wap/Restaurant/orderCheck',array('token'=>$token))}">
+                            <div class="pic"><img src="{pigcms::RES}/restaurant/img/icon/icon-subMenu-daifu.png?1428242195"  />
+</div>
+                            <p class="title">待付款</p>
+                        </a>
+                    </li>
+                    <li <if condition="(ACTION_NAME  eq 'orderCollect') ">class="active"</if>>
+                        <a href="{pigcms::U('Wap/Restaurant/orderCollect',array('token'=>$token))}">
+                            <div class="pic"><img src="{pigcms::RES}/restaurant/img/icon/icon-subMenu-shoucang.png?1428242195"  />
+</div>
+                            <p class="title">我的收藏</p>
+                        </a>
+                    </li>
+                    <li <if condition="(ACTION_NAME  eq 'orderList') ">class="active"</if>>
+                        <a href="{pigcms::U('Wap/Restaurant/orderList',array('token'=>$token))}">
+                            <div class="pic"><img src="{pigcms::RES}/restaurant/img/icon/icon-subMenu-lishi.png?1428242195"  />
+</div>
+                            <p class="title">历史订单</p>
+                        </a>
+                    </li>
+
+                    <li class="diver"></li>
+                    <li class="item-jl" ms-controller="CartNumber">
+                        <a href="{pigcms::U('Wap/Restaurant/orderCheck',array('token'=>$token))}"><div class="pic"><span class="jlCount" id="jlCount">{%num%}</span></div><p class="title">点餐记录</p></a>
+                    </li>
+                    <li class="diver"></li>
+                    <li class="item-home j-backMainMenu"><a href="{pigcms::U('Wap/Restaurant/cats',array('token'=>$token))}"><div class="pic"></div><p class="title">主菜单</p></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- E 侧边内容 -->

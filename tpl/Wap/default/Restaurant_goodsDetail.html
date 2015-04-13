@@ -1,0 +1,86 @@
+<!-- S 菜品详细 -->
+<div id="j-goods" class="f-dn f1" ms-controller="GoodsView">
+
+
+    <div ms-if="goods.id" class="m-menuDetail"
+         ms-css-background-image="url('{%$safe(goods.img?goods.img[0]:goods.cover)%}')">
+
+        <!-- S 描述信息 -->
+        <div class="desc">
+            <!--<h2><span>菜品介绍</span></h2>-->
+            <div class="text">
+                <div class="title">
+                    <h3>{%goods.title%}</h3>
+
+                    <div class="subTit">{%goods.sub_title%}</div>
+                </div>
+                <div class="price">
+                    <span>￥</span>{%$defaultSpec().price%}
+                </div>
+                <p>{%goods.intro%}</p>
+            </div>
+            <div class="plAction">
+                <ul class="f-cb">
+                    <li class="pl" id="j-pl" ms-data-goods-id="goods.goods_id"><a ms-href="#view-comment-{%goods.goods_id%}"><span
+                            class="j-plNum">{%goods.comment_number%}</span>条评论</a></li>
+                    <li class="xh" ms-class-1="active:goods.is_liked"><a href="javascript:;"
+                                                                         ms-on-click="$like()"><span
+                            class="j-xhNum">{%goods.liked%}</span>人喜欢</a></li>
+                    <li class="sc" ms-class-1="active:goods.is_collected"><a href="javascript:;"
+                                                                             ms-on-click="$collect()">收藏我</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- E 描述信息 -->
+
+        <div class="btn-addCart" ms-if="goods.disabled == 0">
+            <a href="javascript:;" ms-click="add()"><i class="u-icon u-icon-choose"></i><p>加入购物车</p></a>
+        </div>
+
+
+
+    </div>
+</div>
+<!-- E 菜品详细 -->
+
+<!-- S 评论 -->
+<div id="wapper3" class="j-pl-list f-dn">
+    <div class="wapper-inner" ms-controller="GoodsView">
+        <div class="m-pinglun">
+            <div class="m-pinglun-box">
+                <div class="m-menuList">
+                    <div class="img"><img ms-src="$safe(goods.cover, '')" alt=""/></div>
+                    <div class="text">
+                        <div class="title">
+                            <h2>{%goods.title%}</h2>
+
+                            <p>{%goods.sub_title%}</p>
+                        </div>
+                        <div class="price">￥{%$defaultSpec().price%}</div>
+                    </div>
+                </div>
+
+                <div class="plAction">
+                    <ul class="f-cb">
+                        <!--<li class="pl return"><a href="javascript:;" class="j-return-goods-view">返回</a></li>-->
+                        <li class="xh" ms-class-1="active:goods.is_liked"><a href="javascript:;"
+                                                                             ms-on-click="$like()"><span
+                                class="j-xhNum">{%goods.liked%}</span>人喜欢</a></li>
+                        <li class="sc" ms-class-1="active:goods.is_collected"><a href="javascript:;"
+                                                                                 ms-on-click="$collect()">收藏我</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="pinglun-list">
+                    <div class="pinglun-list-inner" id="commentArea">
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- E 评论 -->

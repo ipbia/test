@@ -1,0 +1,90 @@
+<script src="http://libs.baidu.com/jquery/1.10.0/jquery.min.js"></script>
+<script type="text/javascript">
+    !window.jQuery && document.write('<script src="{pigcms::RES}/restaurant/asset/jquery-1.10.0.min.js"><\/script>');
+</script>
+<!-- <script src="{pigcms::RES}/restaurant/default/wechat.api.js?20150120"></script> -->
+<!-- <script src="{pigcms::RES}/restaurant/default/v.share2.js"></script> -->
+<script>
+    App = window.App || {};
+
+    App = {
+        mpid: '{pigcms:$wxuser.uid}',//用户id
+        pfid: '{pigcms:$wxuser.id}',//平台id
+        spid: '{pigcms:$wxuser.id}',//店铺id
+        member: {
+            valid:!!'{pigcms:$fans.id}',
+            mid:'{pigcms:$fans.id}',
+            nickname:'{pigcms:$fans.wechaname}',
+            avatar:'{pigcms:$fans.portrait}'
+        },
+        url: {
+            Index: '{pigcms::U('Wap/Store/index',array('token'=>$token))}',
+
+            GoodsIndex: '{pigcms::U('Wap/Restaurant/index',array('token'=>$token))}',
+            Menu: '{pigcms::U('Wap/Restaurant/menus',array('token'=>$token))}',//'{pigcms::RES}/restaurant/goods/menu.json',
+            MenuGoods: '{pigcms::U('Wap/Restaurant/menu_goods',array('token'=>$token))}',
+            GoodsView: '',
+            GoodsInfo: '{pigcms::U('Wap/Restaurant/goodsInfo',array('token'=>$token))}',
+            GoodsType: '',
+
+            OrderPreview: '/site/order/preview',
+            OrderCheck: '{pigcms::U('Wap/Restaurant/orderCheck',array('token'=>$token))}',
+            OrderCompute: '{pigcms::U('Wap/Restaurant/orderCompute',array('token'=>$token))}',
+            OrderSubmit: '{pigcms::U('Wap/Restaurant/orderSubmit',array('token'=>$token))}',
+            OrderHistoryList: '{pigcms::U('Wap/Restaurant/orderHistoryList',array('token'=>$token))}',
+            OrderView: '{pigcms::U('Wap/Restaurant/orderView',array('token'=>$token))}',
+            OrderSuccess: '{pigcms::U('Wap/Restaurant/orderSuccess',array('token'=>$token))}',
+            OrderSuccessHelpPay: '{pigcms::U('Wap/Restaurant/orderSuccessHelpPay',array('token'=>$token))}',
+            OrderHelpPayNotice: '{pigcms::U('Wap/Restaurant/orderHelpPayNotice',array('token'=>$token))}',
+
+            MemberCoupons: '{pigcms::U('Wap/Restaurant/memberCoupons',array('token'=>$token))}',
+            MemberCollectList : '{pigcms::U('Wap/Restaurant/memberCollectList',array('token'=>$token))}',
+            MemberAddCollect : '{pigcms::U('Wap/Restaurant/addCollect',array('token'=>$token))}',
+            MemberDelCollect : '{pigcms::U('Wap/Restaurant/delCollect',array('token'=>$token))}',
+            MemberAddLike : '{pigcms::U('Wap/Restaurant/addlike',array('token'=>$token))}',
+            MemberCall: '{pigcms::U('Wap/Restaurant/memberCall',array('token'=>$token))}',
+
+            CartSubmit: '{pigcms::U('Wap/Restaurant/cartSubmit',array('token'=>$token))}',
+            CartCombine: '{pigcms::U('Wap/Restaurant/cartCombine',array('token'=>$token))}',
+            CartCombined: '{pigcms::U('Wap/Restaurant/cartCombined',array('token'=>$token))}'
+        },
+        config: {
+            sectionContainer: '#section-container',
+            sectionSelector: ' > div.section',
+            articleSelector: '.article'
+        }
+    };
+
+    App.debug = false;
+    App.platform = {"id":"{pigcms:$wxuser.id}","mpid":"{pigcms:$wxuser.uid}","name":"{pigcms:$company.shortname}","setting":{"wechat_is_affirm":"1","pay_occasion":"0","has_worker":"1","write_money":"1","select_pay_type":"1","has_cook":"1","cook_list":"0"},"logo":"{pigcms:$company.logourl}","intro":"{pigcms:$company.intro}","status":"1","created_at":"1406469841"};
+    App.shop = {"id":"{pigcms:$wxuser.id}","platform_id":"1","name":"{pigcms:$company.shortname}","address":"{pigcms:$company.address}","telephone":"{pigcms:$company.tel}","cover":"{pigcms:$company.logourl}","intro":"{pigcms:$company.intro}","map":"{pigcms:$company.longitude},{pigcms:$company.latitude}","promotion_on":"1","warning_time":"1800","status":"1","created_at":"1413535119","updated_at":"1425628121","deleted_at":null,"pay_notice_tpl":"XdFsPSyaHqY-Knj-dmXNfHbQlpS1Z1z6x2TvOQB8Pac"};
+
+    //微信官方api组件
+    App.wechat = new wechatAPI();
+    App.wechat.mpid = {pigcms:$wxuser.uid};
+    App.wechat.shareData = {
+        shareImageUrl: "{pigcms:$company.logourl}",
+        shareLink: '{pigcms::U('Wap/Store/index',array('token'=>$token))}',
+        shareTitle: "{pigcms:$company.shortname}",
+        shareContent: "{pigcms:$company.intro}"
+    };
+    App.wechat.shareInit();
+</script>
+<script type="text/javascript" src="{pigcms::RES}/restaurant/default/avalon.modern.js"></script>
+<script type="text/javascript" src="{pigcms::RES}/restaurant/default/app.js"></script>
+<script type="text/javascript" src="{pigcms::RES}/restaurant/default/event.js"></script>
+<script type="text/javascript" src="{pigcms::RES}/restaurant/default/api.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "http://hm.baidu.com/hm.js?7fb5cc546877a40647ea552760f6447f";
+        var s = document.getElementsByTagName("head")[0];
+        s.appendChild(hm);
+    })();
+</script><script type="text/javascript" src="{pigcms::RES}/restaurant/default/app(1).js?1427772810"></script>
+<script type="text/javascript" src="{pigcms::RES}/restaurant/default/jquery.sim.scroll.js?1427772810"></script>
+<script type="text/javascript" src="{pigcms::RES}/restaurant/default/ET.js?1427772810"></script>
+<script type="text/javascript" src="{pigcms::RES}/restaurant/default/app(2).js?1427772810"></script>
+
+<script type="text/javascript" src="{pigcms::RES}/restaurant/default/cart.js?1427772810"></script>

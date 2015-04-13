@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<meta content="yes" name="apple-mobile-web-app-capable">
+		<meta content="black" name="apple-mobile-web-app-status-bar-style">
+		<meta content="telephone=no" name="format-detection">
+		<title>积分商城</title>
+		<link rel="stylesheet" type="text/css" href="http://static.weiwubao.com/asset/lib/css/base.css">
+		<link rel="stylesheet" type="text/css" href="http://static.weiwubao.com/asset/apps/plugins/vip_v3/css/main.css">
+    </head>
+	<style type="text/css">
+		.theme_bg1 {
+			background:url(http://static.weiwubao.com/asset/apps/plugins/vip_v3/img/theme/bg1.png) no-repeat; background-size:100% 100%
+		}
+	</style> 
+    <body class="theme_bg1">
+		<header class="point_store_head">
+			<p><span class="name"></span><span class="point">积分：0</span></p>
+		</header>
+		<div class="wrap oh" ms-controller="Exchange">
+			<div class="wrap_withtop">
+				<article class="point_store_body">
+					<div id="item_list">
+						<figure ms-repeat-item="list">
+							<div class="orange_tag"><p>{%item.type%}</p><p>剩余：{%item.stock_left%}</p></div><a ms-href="/site/index/exchange_detail/?id={%item.id%}"><img ms-src="item.image"></a><figcaption><dl><dt>{%item.coupon_value%}</dt><dd><span class="f-fl c_fff993">{%item.integral%} 积分</span><span class="f-fr">下架时间：{%item.dead_line%}</span></dd></dl></figcaption><a ms-href="/site/index/exchange_detail/?id={%item.id%}" class="point_store_detail"><span>查看详情</span></a>
+						</figure>
+					</div>
+					<div class="radius3 oh mt10">
+						<a href="javascript:;" class="point_store_detail" ms-if="HasMorePage" ms-click="LoadMore">加载更多</a>
+						<a href="javascript:;" class="point_store_detail" ms-if="list==''">暂无商品上架</a>
+					</div>
+				</article>
+			</div>
+		</div>
+		<footer class="new_default_footer" ms-controller="Vip">
+	<ul class="new_footer">
+		<li><a href="/site/index/coupon"><b class="small_icon small_coupon"><i  ms-if="count.UnusedCoupon"></i></b><span>优惠劵</span></a></li>
+		<li><a href="/site/index/exchange"><b class="small_icon small_shopping"></b><span>积分商城</span></a></li>
+		<li><a href="/site/index/message"><b class="small_icon small_msg"><i  ms-if="count.UnreadMessage"></i></b><span>消息</span></a></li>
+		<li><a href="/site/index/index"><b class="small_center"><span>会员中心</span></b></a></li>
+	</ul>
+</footer>		<style>
+	.ms-controller, [ms-controller]{ visibility:hidden}
+	.theme_bg1 {
+		background:url(http://static.weiwubao.com/asset/apps/plugins/vip_v3/img/theme/bg1.png) no-repeat; background-size:100% 100%
+	}
+</style>
+
+<script type="text/javascript" src="http://static.weiwubao.com/asset/lib/js/jquery-1.11.0.min.js?1427772566"></script>
+<script type="text/javascript" src="http://static.weiwubao.com/asset/lib/js/ibox.js?1427772566"></script>
+<script type="text/javascript" src="http://static.weiwubao.com/asset/lib/js/wechat.api.js?1427772566"></script>
+<script>
+	App = {
+	mpid: '800194',
+		member: {"m_id":"2202067","mp_id":"800194","api_id":"oFq_CjnVqyO_vNjpwduvBYbYeh-o","fake_id":null,"group_id":"0","nickname":"女士包包精品店","short_address":"中国北京西城","sex":"2","avator":"http:\/\/static.weiwubao.com\/download\/avator\/member_oFq_CjnVqyO_vNjpwduvBYbYeh-o.jpg","regdate":"1427259279","integral":"0","game_integral":"0","update_time":"1427764831","last_message":"1427259279","last_message_id":"0","last_lottery":"0","status":"1","token":"142777182712359","truename":null,"introduce":null,"brith_year":null,"brith_month":null,"brith_day":null,"email":null,"mobphone":null,"address":null,"remark":null,"province":null,"city":null,"county":null,"school":null},
+		card: {"card_id":"147950","member_id":"2202067","mp_id":"800194","member_name":"女士包包精品店","member_tel":"--","card_number":"00147818","integral":"0","money":"0.00","cost":"0","exp":"0","level":"0","auto_lvlup":"1","discount":"1.00","creat_date":"1427259280","auth":"220206714277721693068","member_gifts":null,"member_gift":null,"deduct_lock":"0","grade_name":"普通会员","card_style":"11"},
+		url: {
+		Index: '/',
+		},
+	};
+		Api = window.Api || {};
+		Api.Url = {
+		Index: '/',
+			Register:'/site/index/register/', //领取会员卡
+			GetQrcode:'/site/index/get_code/',
+			LoadMessage:'/site/index/message/',
+			LoadCoupon:'/site/index/coupon/',
+			GetCouponQrcode:'/site/index/get_coupon_qrcode/',
+			SetCouponUsed:'/site/index/set_coupon_used/', //使用优惠券
+			CheckCouponUsed:'/site/index/check_coupon_used/', //检查优惠券是否使用
+			GetIntegralGoods:'/site/index/get_integral_goods/', //拉取积分商品
+			ConfirmExchange:'/site/index/confirm_exchange/', //兑换积分商品
+			GetRecord:'/site/index/record/', //获取操作记录
+			UpdateMmemberInfo:'/site/member/update/', //更新个人资料
+			DepositCardsShop:'/site/deposit/cards_shop/', //在售充值卡列表
+			MyDepositCards:'/site/deposit/cards/', //我的充值卡列表
+			CardRecharge:'/site/deposit/card_recharge/', //使用充值卡
+			CardRechargeSuccess:'/site/deposit/card_recharge_success/', //充值成功
+			CardCreateOrder:'/site/deposit/card_create_order/', //创建订单
+			CreateRechargeOrder:'/site/deposit/create_recharge_order/', //创建自助充值订单
+			RechargeRecord:'/site/deposit/record/', //充值记录
+			CardSetGiving:'/site/deposit/card_set_giving/', //转赠充值卡
+			CardSend:'/site/deposit/card_send/', //转赠充值卡
+			CardReceive:'/site/deposit/card_receive/', //接受充值卡
+			CardSetReceive:'/site/deposit/card_set_receive/', //确认领取充值卡操作
+			OfflineCardRecharge:'/site/deposit/offline_card_recharge/', //确认领取充值卡操作
+
+		},
+		//微信官方api组件
+		App.wechat = new wechatAPI();
+		App.wechat.mpid = '800194';
+		App.wechat.shareInit();
+		App.wechat.hideTopTool();
+</script>
+<script type="text/javascript" src="http://static.weiwubao.com/asset/lib/avalon/avalon.modern.js?1427772566"></script>
+<script type="text/javascript" src="http://static.weiwubao.com/asset/lib/js/app.js?1427772566"></script>
+<script type="text/javascript" src="http://static.weiwubao.com/asset/apps/vip/common/js/api.js?1427772566"></script>
+<script type="text/javascript" src="http://static.weiwubao.com/asset/apps/vip/common/js/vip.js?1427772566"></script>
+		<script>
+			App.count = {"UnreadMessage":0,"UnusedCoupon":0};
+			$(function() {
+				avalon.vm('Vip').init();
+				avalon.vm('Exchange').init();
+			});
+		</script>
+    </body>
+</html>

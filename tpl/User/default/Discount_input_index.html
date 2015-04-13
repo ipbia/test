@@ -1,0 +1,56 @@
+<include file="Public:head"/>
+<script src="./tpl/static/artDialog/jquery.artDialog.js?skin=default"></script>
+<script src="./tpl/static/sucaiku/iframeTools.js"></script>
+<script src="./tpl/static/sucaiku/upyun.js"></script>
+<link rel="stylesheet" type="text/css" href="{pigcms::RES}/css/cymain.css" />
+<div class="content">
+
+<div class="cLineB">
+  <h4>折扣用户订单<span class="FAQ"></span></h4>
+  
+ </div>
+ 
+ <div class="tab">
+<ul>
+<li class="current tabli" id="tab0"><a href="{pigcms::U('Discount_input/index',array('token'=>$token))}">折扣订单管理</a></li>
+<li class="tabli" id="tab2"><a href="{pigcms::U('Discount/index',array('token'=>$token))}">折扣商品管理</a></li>
+</ul>
+</div>       
+ 
+ <div class="msgWrap form">
+
+<div class="bdrcontent">
+<div id="div_ptype">
+<table class="ListProduct" border="0" cellSpacing="0" cellPadding="0" width="100%">
+<thead>
+<tr> <th style=" width:100px;">商品名</th> <th style=" width:100px;">订购时间</th> <th style=" width:100px;">状态</th> <th style=" width:100px;">订购人</th> <th style=" width:100px;">手机号</th></span></span></th>
+<th style=" width:120px;">操作</th>
+</tr>
+</thead>
+<volist name="info" id="vo">
+<tr><td>{pigcms:$vo.pname}</td><td>{pigcms:$vo.adddate}</td><td>{pigcms:$vo.status}</td><td>{pigcms:$vo.name}</td><td>{pigcms:$vo.phone}</td><td class="norightborder">
+	
+	<a target="ddd" href="{pigcms::U('Discount_input/edit',array('id'=>$vo['id']))}">编辑</a>
+	<a href="{pigcms::U('Discount_input/del',array('id'=>$vo['id']))}">删除</a>
+</td>
+</tr>
+</volist>
+               
+  </table>
+</div>
+</div>
+<div class="footactions" style="padding-left:10px">
+  <div class="pages">{pigcms:$page}</div>
+</div>
+          </div>
+  
+        </div>
+   
+        <div class="clr"></div>
+      </div>
+    </div>
+  </div> 
+  <!--底部-->
+  	</div>
+
+<include file="Public:footer"/>

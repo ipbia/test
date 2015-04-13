@@ -1,0 +1,144 @@
+
+<html>
+<head>
+<meta charset="utf-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>扫雷</title>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<link rel="stylesheet" href="js/bootstrap.min.css">
+<link href="js/engine.css" rel="stylesheet" type="text/css">
+<link href="js/game.css" rel="stylesheet" type="text/css">
+<style>
+#ad {
+	text-align: center;
+	left:0px;
+	right:0px;
+	bottom: -5px;
+	position: fixed;
+	background-color:#FFF;
+	z-index:999;
+}
+</style>
+<script src="jquery/2.1.1/jquery.min.js"></script>  
+  </head>
+  <body>          
+    <div class="engine" style="margin-top: -10.5px;">
+      <div class="notice"></div>
+
+      <div class="status">
+          <div class="current panel">当前用时 <span>0.00</span> s</div> 
+          <div class="best panel">最快用�?<span>0.00</span> s</div>
+      </div>
+
+      <div class="game panel">
+        <div class="cell-container"></div>
+        <div class="ending">
+          <p></p>
+          <div class="btns">  
+            <button class="retry btn">再来一局</button>
+            <button class="more btn btn-warning" onclick="clickMore();">更多游戏</button>
+          </div>
+        </div>
+      </div>
+    </div>
+                                  
+    
+    <script src="js/bootstrap.min.js" ></script>
+    <script src="js/engine.js"></script>
+    <script src="js/game.js" charset="utf-8"></script>
+    <script language=javascript>
+		var mebtnopenurl = 'http://game.id87.com/';
+		window.shareData = {
+		        "imgUrl": "http://game.id87.com/Public/sl/icon.png",
+		        "timeLineLink": "http://game.id87.com/Public/sl/",
+		        "tTitle": "扫雷",
+		        "tContent": "不要羡慕我，我只是个扫雷界的传说"
+		};
+				
+		function goHome(){
+			window.location=mebtnopenurl;
+		}
+		function clickMore(){
+			if((window.location+"").indexOf("f=zf",1)>0){
+				window.location = "http://game.9g.com/goto9g.html?f=sl";
+			 }
+			 else{
+				goHome();
+			 }
+		}
+		function dp_share(){
+			document.title ="不要羡慕我，我只是个扫雷界的传说, 成绩�?+myData.scoreName+"，不可能比这个成绩更好了吧！";
+			document.getElementById("share").style.display="";
+			window.shareData.tTitle = document.title;
+		}
+		function dp_Ranking(){
+			window.location=mebtnopenurl;
+		}
+
+		function showAd(){
+		}
+		function hideAd(){
+		}
+		document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+		    
+		    WeixinJSBridge.on('menu:share:appmessage', function(argv) {
+		        WeixinJSBridge.invoke('sendAppMessage', {
+		            "img_url": window.shareData.imgUrl,
+		            "link": window.shareData.timeLineLink,
+		            "desc": window.shareData.tContent,
+		            "title": window.shareData.tTitle
+		        }, onShareComplete);
+		    });
+
+		    WeixinJSBridge.on('menu:share:timeline', function(argv) {
+		        WeixinJSBridge.invoke('shareTimeline', {
+		            "img_url": window.shareData.imgUrl,
+		            "img_width": "640",
+		            "img_height": "640",
+		            "link": window.shareData.timeLineLink,
+		            "desc": window.shareData.tContent,
+		            "title": window.shareData.tTitle
+		        }, onShareComplete);
+		    });
+		}, false);
+		</script>
+		<div id=share style="display: none">
+			<img width=100% src="share.png"
+				style="position: fixed; z-index: 9999; top: 0; left: 0; display: "
+				ontouchstart="document.getElementById('share').style.display='none';" />
+		</div>
+		<div style="display: none;">
+			<script type="text/javascript">
+            var myData = { gameid: "sl" };
+            //var domain = ["oixm.cn", "hiemma.cn", "peagame.net"][parseInt(Math.random() * 3)];
+			//window.shareData.timeLineLink = "http://"+ parseInt(Math.random()*100000) +"."+ myData.gameid +"."+domain+"/gamecenter.html?gameid=" + myData.gameid + (localStorage.myuid ? "&uid=" + localStorage.myuid : "");
+			function dp_submitScore(score){
+				myData.score = parseInt(score);
+				myData.scoreName = (score/1000)+"秒完�?;
+				if(score>0){
+					if (confirm("您只用了"+(score/1000)+"秒，就完工了，炫耀一下给小伙伴看看吧�?)){
+						setTimeout(dp_share,500);
+					}
+				}
+			}
+			function onShareComplete(res) {
+                if (localStorage.myuid && myData.score != undefined) {
+                    setTimeout(function(){
+                        if (confirm("要将成绩提交�?G游戏排行榜吗�?)) {
+                            //window.location = "http://wx.9g.com/rank/submit2.jsp?gameid=" + myData.gameid + "&uid=" + localStorage.myuid + "&score=" + myData.score + "&scorename=" + encodeURIComponent(myData.scoreName);
+                        }
+                        else {
+                            document.location.href = mebtnopenurl;
+                        }
+                    }, 500);
+                }
+				else {
+		        	document.location.href = mebtnopenurl;
+				}
+	        }
+			</script>
+		 
+</body>
+</html>

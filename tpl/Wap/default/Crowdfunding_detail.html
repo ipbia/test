@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="format-detection" content="telephone=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta charset="utf-8">
+<title>{PigCms:$info.name}</title>
+<link rel="stylesheet" href="{PigCms:$staticPath}/tpl/static/crowdfunding/css/zc-common.css">
+<link rel="stylesheet" href="{PigCms:$staticPath}/tpl/static/crowdfunding/css/zc-index.css">
+
+<script type="text/javascript" src="{PigCms:$staticPath}/tpl/static/jquery.min.js"></script>
+</head>
+<body>
+<div class="wrapbox">
+    <!-- heard -->
+    <header class="header">
+    <h2><a href="javascript:void(0);" class="text-red">产品信息</a></h2>
+    <a href="javascript:window.history.go(-1);" class="icon btn-goback"></a>
+    <a href="{PigCms::U('Crowdfunding/my_support',array('token'=>$token,'wecha_id'=>$wecha_id))}" class="icon btn-person"></a>
+    </header>
+    <!-- / -->
+    <!-- main -->
+    <div class="pd-b50">
+        <div class="title-box">
+            <h4 class="h4-title">
+                <strong>{PigCms:$info.name}</strong>
+            </h4>
+            <p>
+                {PigCms:$info['start']|date="Y/m/d",###}-{PigCms:$info['end']|date="Y/m/d",###}火热筹款中
+            </p>
+        </div>
+        <div class="initiater-box">
+            <div class="gridbox">
+                <div class="headpic">
+                    <img src="{PigCms:$company.logourl}" alt="" height="50" width="50">
+                </div>
+                <div class="grid-1">
+                    <h4>
+                        {PigCms:$company.name}
+                    <!-- <i class="icon i-approve"></i>
+                    <i class="icon i-medal"></i> -->
+                    </h4>
+                    <p>
+                        {PigCms:$company.shortname}
+                    </p>
+                    <p>
+                        <span class="mr20">发起：{PigCms:$originate}</span><span>支持：{PigCms:$support}</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-box">
+            {PigCms:$info.detail}
+        </div>
+
+
+    <include file="Crowdfunding:footer" />
+    </div>
+</div>
+
+</div>
+
+
+<script type="text/javascript">
+window.shareData = {  
+            "moduleName":"Crowdfunding",
+            "moduleID":"0",
+            "imgUrl": "{PigCms:$info['pic']}", 
+            "timeLineLink": "{PigCms:$f_siteUrl}{PigCms::U('Crowdfunding/index',array('token'=>$token,'id'=>$info['id']))}",
+            "sendFriendLink": "{PigCms:$f_siteUrl}{PigCms::U('Crowdfunding/index',array('token'=>$token,'id'=>$info['id']))}",
+            "weiboLink": "{PigCms:$f_siteUrl}{PigCms::U('Crowdfunding/index',array('token'=>$token,'id'=>$info['id']))}",
+            "tTitle": "{PigCms:$info['name']}",
+            "tContent": "{PigCms:$info['intro']}"
+};
+</script>
+{PigCms:$shareScript}
+</body>
+</html>
