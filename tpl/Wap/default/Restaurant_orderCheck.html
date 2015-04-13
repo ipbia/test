@@ -1,0 +1,464 @@
+<include file="Restaurant:header"/>
+
+<div class="container" id="j-container" ms-controller="App">
+    
+<include file="Restaurant:orderNavigator"/>
+
+<!-- S 主体内容 -->
+<div class="g-main du-g-main" id="j-main">
+
+    <!-- S 优惠券 -->
+        <div class="youhuiquan anim" ms-controller="Order">
+
+        <div class="youhuiquan-inner">
+            <div class="youhuiquan-cnt">
+
+                <div class="title">
+                    <h2>{pigcms:$fans.wechaname}，选择您的优惠券</h2>
+                    <p>使用说明：不设最低金额，但优惠券不找零哟！</p>
+                </div>
+
+                <div class="youhuiquan-list">
+                    <ul>
+                        <li class="f-cb" ms-repeat="coupons" ms-class="active:el.selected">
+                            <div class="items f-cb">
+                                <div class="ic"></div>
+                                <div class="right" ms-on-click="selectCouponsAndCompute(el.id)">
+                                    <div class="xz" ms-if="el.selected">取消</div>
+                                    <div class="xz" ms-if="!el.selected">选择</div>
+                                </div>
+                                <div class="left">
+                                    <div>
+                                        <h2>{%el.title%}</h2>
+                                        <p>有效期至：{%el.expires_date%}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <!--<a class="u-btn u-btn4 loadMore" href="javascript:;" ><span>加载更多</span></a>-->
+                </div>
+            </div>
+        </div>
+
+        <div class="ft">
+            <div class="ft-inner">
+                <div class="top">
+                    <p class="p1">您已选择 {%couponsSelectedNumber%} 张优惠券</p>
+                    <p class="p2">原价￥{%cartTotal()%}，使用抵扣券后</p>
+                </div>
+                <div class="payMoney">
+                    需支付<span>￥{%price%}</span>
+                </div>
+
+                <div class="payChoose" style="margin-top:10px;">
+                    <ul class="f-cb">
+                        <li class="choose1" style="float:right; padding-right:0;">
+                            <a class="u-btn u-btn4 j-backToOrder" href="javascript:;"><span>返回</span></a>
+                        </li>
+                        <!--<li class="choose2">-->
+                            <!--<a class="u-btn u-btn2 j-shiyongyhq" href="javascript:;"><span>确认使用</span></a>-->
+                        <!--</li>-->
+                    </ul>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+        <!-- E 优惠券 -->
+
+
+    <!-- S 备注 -->
+    <div class="beizhuBox anim">
+        <div class="beizhuBox-inner">
+            <div class="beizhuBox-cnt">
+                <h2>添加你的备注</h2>
+                <textarea class="j-bzText"></textarea>
+                <div class="payChoose">
+                    <ul class="f-cb">
+                        <li class="choose1">
+                            <a class="u-btn u-btn4 j-bzClose" href="javascript:;"><span>返回</span></a>
+                        </li>
+                        <li class="choose2">
+                            <a class="u-btn u-btn2 j-bzSub" href="javascript:;"><span>提交</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- E 备注 -->
+    
+    <!-- S 收货人信息 -->
+    <div class="userBox anim">
+        <div class="beizhuBox-inner">
+            <div class="beizhuBox-cnt">
+                <h2>收货人姓名:</h2>
+                <textarea class="j-usernameText">{pigcms:$fans.truename}</textarea>
+                <h2>手机号:</h2>
+                <textarea class="j-usertelText">{pigcms:$fans.tel}</textarea>
+                <h2>收货地址:</h2>
+                <textarea class="j-useraddressText">{pigcms:$fans.address}</textarea>
+                <div class="payChoose">
+                    <ul class="f-cb">
+                        <li class="choose1">
+                            <a class="u-btn u-btn4 j-userClose" href="javascript:;"><span>返回</span></a>
+                        </li>
+                        <li class="choose2">
+                            <a class="u-btn u-btn2 j-userSub" href="javascript:;"><span>提交</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- E 收货人信息 -->
+
+
+    <div id="wapper2" class="rongqi">
+
+        <!--订单确认页面-->
+        <div class="wapper-inner j-content2 " id="page-order">
+
+            <div class="m-box1" ms-controller="Cart">
+                <div class="m-box1-cnt">
+                    <p class="empty-cart" ms-if="total==0">您还未点餐</p>
+                    <!-- S 账单 -->
+                    <div ms-if="total>0" class="zhangdan zhangdan-order j-plusOrder">
+                        <img src="{pigcms::RES}/restaurant/img/icon/arrow.png" class="orderTipsImg"  />
+                        <div class="hd">
+                            <h2>{pigcms:$fans.wechaname}，吃喝如下：</h2>
+                            <p>如有特殊需求，请注意填写备注哟！</p>
+                        </div>
+                        <div class="bd">
+                            <table class="order">
+                                <thead>
+                                <tr>
+                                    <th>菜品</th>
+                                    <th>数量</th>
+                                    <th>小计</th>
+                                    <th class="f-tac">备注</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ms-repeat="cart">
+                                    <td class="col1"><span class="f-toe col1-cp">{%el.$goods.title%}</span></td>
+                                    <td>
+                                        <div class="numCalc">
+                                            <a class="numCalc-minus j-minus" href="javascript:;" ms-on-click="sub(el.id, el.sid)">&nbsp;</a><span class="numCalc-num j-orderNum">{%el.number%}</span><a class="numCalc-plus j-plus" href="javascript:;" ms-on-click="add(el.id, el.sid)">&nbsp;</a>
+                                        </div>
+                                    </td>
+                                    <td>￥<span class="j-price">{%el.price * el.number%}</span></td>
+                                    <td class="f-tac">
+                                        <a class="j-beizhu beizhu" href="javascript:;"
+                                           ms-data-id="el.id"
+                                           ms-data-sid="el.sid"
+                                           ms-class="active:el.remark">&nbsp;</a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                                                        <div class="yhq"><a class="j-chooseYhq" href="javascript:;">查看并选择您可用的抵扣券</a></div>
+                                                    </div>
+                        <div class="ft" ms-controller="Order">
+                            <p style="text-align:right;font-size:13px; color:green; padding:0 10px 10px 10px;" ms-repeat="promotion">{%el.name%} -{%el.money%}元</p>
+                            <div class="payMoney">
+                                需支付<span>￥<i class="j-total">{%price%}</i></span>
+                            </div>
+                            <div class="payChoose">
+                                <ul class="f-cb">
+                                	<li class="choose1">
+                                        <!--<p style="color: #b9ad7e;">收货人信息</p>-->
+                                        <a style="background-color: #b9ad7e;" class="j-user u-btn" id="j-btn-send" href="#"><span style="border-color: #e1dbc4;">收货信息</span></a>
+                                    </li>
+<!--                                     <li class="choose1"> -->
+<!--                                         <p style="color: #b9ad7e;">嘻嘻，朋友埋单</p> -->
+<!--                                         <a style="background-color: #b9ad7e;" class="u-btn" id="j-btn-send" href="#order-send"><span style="border-color: #e1dbc4;">朋友埋单</span></a> -->
+<!--                                     </li> -->
+                                    <li class="choose2">
+                                        <!--<p>嗷嗷，自己埋单</p>-->
+                                        <a id="j-btn-submit" class="u-btn u-btn2" href="#order-submit"><span>去结算</span></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- E 账单 -->
+                </div>
+                <img src="{pigcms::RES}/restaurant/img/bg-bolang.png?1428242195" class="f-db"  />
+            </div>
+        </div>
+
+        <!--支付选择页面-->
+        <div class="wapper-inner j-content2" style="display:none;" id="page-pay-choice">
+
+            <div class="m-box1">
+                <div class="m-box1-cnt" style="padding-bottom:30px;">
+                    <!-- S 选择支付-->
+                    <div class="du_selPay" ms-controller="Order">
+                        <div class="du_selPayCnt">
+                            <div>
+                                <p class="name">{pigcms:$fans.wechaname},您好！</p>
+                                <p class="tips">请为你的订单选择付款方式</p>
+                            </div>
+                            <ul class="selectPay">
+                            	<if condition="$pay_setting['Weixin']">
+	                                <li class="item">
+	                                    <p>选择微信支付，订单可直接传到吧台，马上为您备餐~</p>
+	                                    <div class="u-btnBox  f-tac">
+	                                        <a  ms-on-click="wxPay()" class="u-btn u-btn2" href="javascript:void(0)">
+	                                            <span><i class="u-icon u-icon-wx"></i>微信支付</span>
+	                                        </a>
+	                                    </div>
+	                                </li>
+                                </if>
+                                <if condition="$pay_setting['TenpayComputer'] || ($pay_setting['Platform'] && C('platform_open') && C('platform_tenpayComputer_open'))">
+	                                <li class="item">
+	                                    <p>选择财付通，订单可直接传到吧台，马上为您备餐~</p>
+	                                    <div class="u-btnBox  f-tac">
+	                                        <a  ms-on-click="tenpayComputerPay()" class="u-btn u-btn2" href="javascript:void(0)">
+	                                            <span><i class="u-icon u-icon-cft"></i>财付通支付</span>
+	                                        </a>
+	                                    </div>
+	                                </li>
+                                </if>
+                                <if condition="$pay_setting['Daofu']">
+	                                <li class="item">
+	                                    <p>也可以选择货到付款，等待商家为您配送~</p>
+	                                    <div class="u-btnBox f-tac">
+	                                        <a ms-on-click="daofuPay()" class="u-btn c-zt2" href="javascript:void(0)" style=" background: #41240e;">
+	                                            <span><i class="u-icon u-icon-df"></i> 货到付款</span>
+	                                        </a>
+	                                    </div>
+	                                </li>
+                                </if>
+                                <if condition="$pay_setting['Dianfu']">
+	                                <li class="item">
+	                                    <p>也可以选择现金，等待服务员前来确定订单~</p>
+	                                    <div class="u-btnBox f-tac">
+	                                        <a ms-on-click="cashPay()" class="u-btn c-zt2" href="javascript:void(0)" style=" background: #41240e;">
+	                                            <span><i class="u-icon u-icon-money"></i> 现金支付</span>
+	                                        </a>
+	                                    </div>
+	                                </li>
+                                </if>
+<!--                                 <li class="item" style="box-shadow:none;"> -->
+<!--                                     <p>还可以选择刷卡，等待服务员前来确定订单~~</p> -->
+<!--                                     <div class="u-btnBox f-tac"> -->
+<!--                                         <a ms-on-click="cardPay()" class="u-btn u-btn6 c-primary1" href="javascript:void(0)"> -->
+<!--                                             <span><i class="u-icon u-icon-df"></i> 刷卡支付</span> -->
+<!--                                         </a> -->
+<!--                                     </div> -->
+<!--                                 </li> -->
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- E 选择支付-->
+
+                </div>
+                <img src="{pigcms::RES}/restaurant/img/bg-bolang.png?1428242195" class="f-db"  />
+            </div>
+        </div>
+
+        <!--推出选择页面-->
+        <div class="wapper-inner j-content2" style="display:none;" id="page-send-choice">
+
+            <div class="m-box1">
+                <div class="m-box1-cnt">
+
+                    <!-- S 选择支付-->
+                    <div class="du_selPay">
+                        <div class="du_selPayCnt">
+                            <div style="border-bottom: 1px solid #fff;">
+                                <p class="name">{pigcms:$fans.wechaname},您好！</p>
+                                <p class="tips">请为你的订单选择推出方式</p>
+                            </div>
+                            <ul class="selectPay">
+                                <li class="item" ms-controller="Cart">
+                                    <p>推给坐在旁边负责埋单的小伙伴，多人点单他一人埋单！</p>
+                                    <div class="u-btnBox f-tac">
+                                        <a ms-on-click="submit()" class="u-btn" href="javascript:void(0)">
+                                            <span>好人缘店内做东</span>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="item">
+                                    <p>人品好，没来BG的朋友也可以微信支付为我埋单！</p>
+                                    <div class="u-btnBox f-tac" ms-controller="Order">
+                                        <a ms-on-click="helpPay()"  class="u-btn u-btn2" href="javascript:void(0)">
+                                            <span>霸气土豪店外埋单</span>
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- E 选择支付-->
+
+                </div>
+                <img src="{pigcms::RES}/restaurant/img/bg-bolang.png?1428242195" class="f-db"  />
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+<!-- E 主体内容 -->
+
+
+</div>
+
+<include file="Restaurant:publicjs"/>
+<script type="text/javascript" src="{pigcms::RES}/restaurant/default/order.js?1428242195"></script>
+<script>
+    (function() {
+
+        avalon.vm('Order').$init();
+
+        $(function() {
+            App.on(App.event.OrderSubmitting, function() {
+                ETMsg.loading('订单提交中...');
+            });
+
+            // 订单提交失败
+            App.on(App.event.OrderSubmitError, function(msg) {
+                ETMsg.hide();
+                ETMsg.alert('提示', msg);
+            });
+
+            // 订单提交成功,跳转到订单列表页面
+            App.on(App.event.OrderSubmitSuccess, function(data) {
+                ETMsg.hide();
+                ETMsg.toast('订单提交成功');
+                if(data.url){
+                	location.href = data.url;
+                }
+                /**
+                if (data.pay_type == 0) {
+                    // 现金支付
+                    location.href = App.url.OrderSuccess + '?id=' + data.id;
+                } else if (data.pay_type == 1) {
+                    // 微信支付
+                    location.href = App.url.OrderView + '?id=' + data.id + '&pay=1';
+                } else if (data.pay_type == 2) {
+                    // 刷卡支付
+                    location.href = App.url.OrderSuccess + '?id=' + data.id;
+                } else if (data.pay_type == 4) {
+                    // 代付
+                    location.href = App.url.OrderSuccessHelpPay + '?id=' + data.id;
+                } else if (data.pay_type == 6) {
+                    // 余额支付
+                    location.href = App.url.OrderView + '?id=' + data.id + '&pay=1';
+                } else {
+                    location.href = App.url.OrderView + '?id=' + data.id;
+                }
+                **/
+            });
+
+            // 购物车保存失败
+            App.on(App.event.CartSubmitError, function(msg) {
+                ETMsg.alert('提示', msg);
+            });
+
+            var timeid = 0;
+            App.on(App.event.OrderComputing, function() {
+                timeid = setTimeout(function() {
+                    ETMsg.loading();
+                    timeid = 0;
+                }, 1000);
+            });
+            App.on(App.event.OrderComputeSuccess, function() {
+                if (timeid) {
+                    clearTimeout(timeid);
+                }
+                ETMsg.hide();
+            });
+            App.on(App.event.OrderComputeError, function() {
+                ETMsg.hide();
+                ETMsg.alert('提示', '计算订单价格失败,请重试');
+            });
+
+            // 删除商品
+            App.on(App.event.CartRemove, function(g, next) {
+                ETMsg.confirm('提示', '确定不点我了吗?', function() {
+                    next();
+                    ETMsg.hide();
+                });
+            });
+
+            var $pageOrder = $('#page-order');
+            var $pagePayChoice = $('#page-pay-choice');
+            var $pageSendChoice = $('#page-send-choice');
+
+            function hide() {
+                $pageOrder.hide();
+                $pagePayChoice.hide();
+                $pageSendChoice.hide();
+            }
+
+            // 购物车保存
+            App.on(App.event.CartSubmitSuccess, function(data) {
+                // 跳转到购物车信息页面,分享链接
+                ETMsg.toast('购物车保存成功');
+                //微信官方api组件
+                App.wechat.shareData.shareLink = data.url;
+                App.wechat.shareData.shareTitle = '店内合并订单';
+                App.wechat.shareData.shareImageUrl = '{pigcms::RES}/restaurant/img/icon-hebing.png?1428242195';
+                ETShare.show(1);
+                hide();
+                $pageOrder.show();
+            });
+
+            // 页面切换
+            // 页面载入时,触发一次hash改变事件
+            App.util.route('', true, true);
+
+            // 绑定链接
+            $(document).on("click", "[href^='#']", function (e) {
+                App.route($(this).attr("href"));
+                e.preventDefault();
+            });
+
+            App.on(App.event.Popstate, function (path) {
+                switch (true) {
+                    // 推出去朋友买单
+                    case path == '#order-send':
+                        hide();
+                        $pageSendChoice.show();
+                        break;
+
+                    // 自己买单
+                    case path == '#order-submit':
+                    	if(!avalon.vm('Order').haveUserInfo()){
+                    		//ETMsg.alert('提示', '请先填写收货信息!');
+                    		return;
+                    	}
+                        hide();
+                        $pagePayChoice.show();
+                        break;
+                    default:
+                        hide();
+                        $pageOrder.show();
+                }
+            });
+        });
+
+    })();
+</script>
+
+</body>
+<script type="text/javascript">
+window.shareData = {  
+            "moduleName":"Restaurant",
+            "moduleID":"{pigcms:$_GET['id']|intval}",
+            "imgUrl": "{pigcms:$company.logourl}", 
+            "timeLineLink": "{pigcms::C('site_url')}{pigcms::U('Restaurant/orderCheck',array('token'=>$_GET['token']))}",
+            "sendFriendLink": "{pigcms::C('site_url')}{pigcms::U('Restaurant/orderCheck',array('token'=>$_GET['token']))}",
+            "tTitle": "{pigcms:$metaTitle}",
+            "tContent": "{pigcms:$metaContent}""
+        };
+</script>
+{pigcms:$shareScript}
+</html>

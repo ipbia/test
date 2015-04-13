@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta content="telephone=no" name="format-detection">
+    <title>野兽花园咖啡</title>
+    <!-- 基础样式 -->
+    <link rel="stylesheet" type="text/css" href="http://static.weiwubao.com/asset/lib/wwbui/css/wwbui.css">
+    <!-- 页面样式 -->
+    <link rel="stylesheet" type="text/css" href="http://26.800194.youcan.weiwubao.com/asset/private/800194/site/default/lib/ET/dbg/css/fontello/css/fontello.css?1427772615" />
+    <link rel="stylesheet" type="text/css" href="http://26.800194.youcan.weiwubao.com/asset/private/800194/site/default/lib/ET/dbg/css/ET.css?1427772615" />
+    <link rel="stylesheet" type="text/css" href="http://26.800194.youcan.weiwubao.com/asset/private/800194/site/default/css/style.css?1427772615" />
+    </head>
+<body>
+
+<div class="container" id="j-container" ms-controller="App">
+    
+
+
+<!-- S 主体内容 -->
+<div class="g-main cross-main" id="j-main">
+
+    <div class="rongqi">
+        <div class="j-content2">
+
+            <!-- S 点餐记录 -->
+            <div class="lishiList">
+
+                <div class="lishiList-hd">
+                    <h2><span class="f-fr">支付信息</span>点餐记录 <span class="s1">点击菜品查看详情</span></h2>
+                </div>
+
+                <ul class="lishiList-ul">
+                                    </ul>
+
+                <!--<div class="u-btnBox f-tac mt20">-->
+                    <!--<a class="u-btn" href="javascript:;"><span>加载更多</span></a>-->
+                <!--</div>-->
+
+            </div>
+            <!-- E 点餐记录 -->
+
+        </div>
+    </div>
+
+
+</div>
+<!-- E 主体内容 -->
+
+
+
+
+</div>
+
+<script src="http://libs.baidu.com/jquery/1.10.0/jquery.min.js"></script>
+<script type="text/javascript">
+    !window.jQuery && document.write('<script src=http://static.weiwubao.com/asset/lib/js/jquery/jquery-1.10.0.min.js><\/script>');
+</script>
+<script src="http://static.weiwubao.com/asset/lib/js/wechat.api.js?20150120"></script>
+<script src="http://static.weiwubao.com/asset/lib/js/v.share2.js"></script>
+<script>
+    App = window.App || {};
+
+    App = {
+        mpid: '800194',
+        pfid: '1',
+        spid: '26',
+        member: {
+            valid:!!'2202067',
+            mid:'2202067',
+            nickname:'女士包包精品店',
+            avatar:'http://static.weiwubao.com/download/avator/member_oFq_CjnVqyO_vNjpwduvBYbYeh-o.jpg'
+        },
+        url: {
+            Index: '/site/index/index',
+
+            GoodsIndex: '/site/goods/index',
+            Menu: '/site/goods/menu',
+            MenuGoods: '/site/goods/menu_goods',
+            GoodsView: '/site/goods/view',
+            GoodsInfo: '/site/goods/info',
+            GoodsType: '/site/goods/type',
+
+            OrderPreview: '/site/order/preview',
+            OrderCheck: '/site/order/check',
+            OrderCompute: '/site/order/compute',
+            OrderSubmit: '/site/order/submit',
+            OrderList: '/site/order/list',
+            OrderView: '/site/order/view',
+            OrderSuccess: '/site/order/success',
+            OrderSuccessHelpPay: '/site/order/success_help_pay',
+            OrderHelpPayNotice: '/site/order/order_help_pay_notice',
+
+            MemberCoupons: '/site/member/coupons',
+            MemberCollectList : '/site/member/collect_list',
+            MemberAddCollect : '/site/member/add_collect',
+            MemberDelCollect : '/site/member/del_collect',
+            MemberAddLike : '/site/member/add_like',
+            MemberCall: '/site/member/call',
+
+            CartSubmit: '/site/cart/submit',
+            CartCombine: '/site/cart/combine',
+            CartCombined: '/site/cart/combined'
+        },
+        config: {
+            sectionContainer: '#section-container',
+            sectionSelector: ' > div.section',
+            articleSelector: '.article'
+        }
+    };
+
+    App.debug = false;
+    App.platform = {"id":"1","mpid":"800194","name":"\u91ce\u517d\u82b1\u56ed\u5496\u5561","setting":{"wechat_is_affirm":"1","pay_occasion":"0","has_worker":"1","write_money":"1","select_pay_type":"1","has_cook":"1","cook_list":"0"},"logo":"\/upload\/image\/666666\/20140828\/201408281507231.jpg","intro":"intro","status":"1","created_at":"1406469841"};
+    App.shop = {"id":"26","platform_id":"1","name":"\u91ce\u517d1\u5e97","province":"\u91cd\u5e86","city":"\u91cd\u5e86","area":"\u6c5f\u5317\u4e5d\u8857","address":"\u91cd\u5e86\u5e02\u6c5f\u5317\u533a\u4e5d\u8857\u9ad8\u5c4b\u897f\u533a\u4e00\u5c42","trading_area":"\u4e5d\u8857","telephone":"023-67624841","cover":"\/upload\/image\/800194\/20150203\/201502031148151.jpg","img":"a:1:{i:0;s:49:\"\/upload\/image\/800194\/20141017\/201410171637551.jpg\";}","intro":"\u91cd\u5e86\u5e02\u6c5f\u5317\u533a\u4e5d\u8857\u9ad8\u5c4b\u897f\u533a\u4e00\u5c42","map":"29.585907,106.54945","promotion_on":"1","warning_time":"1800","setting":{"call_bg_img":"\/upload\/image\/800194\/20150203\/201502031148151.jpg","wifi_pwd":"","printer0_ip":"","printer1_ip":"","watch_servar_ip":"192.168.1.230","open_watch":"1","show_false_data":"0"},"status":"1","created_at":"1413535119","updated_at":"1425628121","deleted_at":null,"pay_notice_tpl":"XdFsPSyaHqY-Knj-dmXNfHbQlpS1Z1z6x2TvOQB8Pac"};
+
+    //微信官方api组件
+    App.wechat = new wechatAPI();
+    App.wechat.mpid = 800194;
+    App.wechat.shareData = {
+        shareImageUrl: "http://static.weiwubao.com/upload/image/666666/20140828/320x320_201408281507231.jpg",
+        shareLink: 'http://www.weiwubao.com/redirect/800194/?url=aHR0cDovLzI2LjgwMDE5NC55b3VjYW4ud2Vpd3ViYW8uY29tL3NpdGUvb3JkZXIvbGlzdD9taWQ9MDhzWjA0TW9nYjVHcXFJJmFtcDtoaWRkZW49MSZtaWQ9e21pZH0=',
+        shareTitle: "野兽花园咖啡",
+        shareContent: ""
+    };
+    App.wechat.shareInit();
+</script>
+<script type="text/javascript" src="http://26.800194.youcan.weiwubao.com/asset/common/default/lib/avalon-1.3.4/avalon.modern.js?1427772615"></script>
+<script type="text/javascript" src="http://26.800194.youcan.weiwubao.com/asset/common/default/js/app.js?1427772615"></script>
+<script type="text/javascript" src="http://26.800194.youcan.weiwubao.com/asset/site/common/js/event.js?1427772615"></script>
+<script type="text/javascript" src="http://26.800194.youcan.weiwubao.com/asset/site/common/js/api.js?1427772615"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?7fb5cc546877a40647ea552760f6447f";
+        var s = document.getElementsByTagName("head")[0];
+        s.appendChild(hm);
+    })();
+</script><script type="text/javascript" src="http://26.800194.youcan.weiwubao.com/asset/site/default/js/app.js?1427772615"></script>
+<script type="text/javascript" src="http://26.800194.youcan.weiwubao.com/asset/private/800194/site/default/js/lib/jquery.sim.scroll.js?1427772615"></script>
+<script type="text/javascript" src="http://26.800194.youcan.weiwubao.com/asset/private/800194/site/default/lib/ET/dbg/js/ET.js?1427772615"></script>
+<script type="text/javascript" src="http://26.800194.youcan.weiwubao.com/asset/private/800194/site/default/js/app.js?1427772615"></script>
+
+<script type="text/javascript" src="http://26.800194.youcan.weiwubao.com/asset/site/default/js/cart.js?1427772615"></script>
+<script type="text/javascript" src="http://26.800194.youcan.weiwubao.com/asset/site/default/js/order.js?1427772615"></script>
+
+</body>
+</html>

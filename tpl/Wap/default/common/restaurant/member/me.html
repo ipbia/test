@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+		<meta charset="UTF-8">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<meta content="yes" name="apple-mobile-web-app-capable">
+		<meta content="black" name="apple-mobile-web-app-status-bar-style">
+		<meta content="telephone=no" name="format-detection">
+
+		<title>个人资料</title>
+
+		<link rel="stylesheet" type="text/css" href="http://static.weiwubao.com/asset/lib/css/base.css">
+		<link rel="stylesheet" type="text/css" href="http://static.weiwubao.com/asset/apps/plugins/vip_v3/css/main.css">
+		<script src="http://static.weiwubao.com/asset/lib/js/jquery-1.11.0.min.js"></script>
+    </head>
+	<style type="text/css">
+		.theme_bg1 {
+			background:url(http://static.weiwubao.com/asset/apps/plugins/vip_v3/img/theme/bg1.png) no-repeat; background-size:100% 100%
+		}
+	</style> 
+	<body class="theme_bg1" ms-controller="Member">
+
+		<div class="wrap">
+			<div class="member_info_box">
+				<header class="m_i_header">
+					<div class="add_head">
+						<div class="img_head"><img src="http://static.weiwubao.com/download/avator/member_oFq_CjnVqyO_vNjpwduvBYbYeh-o.jpg"/></div>
+					</div>
+				</header>
+
+				<form action="" name="form" id="updateInfoForm">
+					<article class="m_i_form">
+						<ul>
+							<li>
+								<label for="" class="w20 f-fl">姓名</label>
+								<div class="w80 f-fl"><input type="text" placeholder="请填写您的姓名" datatype="Require" msg="请输入您的姓名" id="truename" class="w100" ms-duplex="member.truename"/></div>
+							</li>
+
+							<li>
+								<label for="" class="w20 f-fl">性别</label>
+								<div class="w80 f-fl">
+									<select name="sex" id="chooseSex" class="chooseSex" datatype="Require" msg="请选择您的性别" ms-duplex="member.sex">
+										<option value="1" ms-selected="member.sex==1">男</option>
+										<option value="2" ms-selected="member.sex==2">女</option>
+									</select>
+								</div>
+							</li>
+
+							<li>
+								<label for="" class="w20 f-fl">电话</label>
+								<div class="w80 f-fl">
+									<input type="tel" placeholder="请填写您的手机号码" datatype="Mobile" msg="请输入您的手机号码" id="mobile" class="binding_input w100" ms-duplex="member.mobphone"/>
+									<a href="#" class="binding_newnum" id="bindingNum" style="display: none;">绑定新号码</a>		
+								</div>
+							</li>
+						</ul>
+						<ul class="mt10">
+							<li>
+								<label for="" class="w20 f-fl">生日</label>
+								<div class="w80 f-fl">
+									<div class="local_select">
+										<div><select id="idYear" name="idYear" data="" ms-duplex="member.brith_year"></select><span>{%member.brith_year%}</span></div>
+										<div><select id="idMonth" name="idMonth" data="" ms-duplex="member.brith_month"></select><span>{%member.brith_month%}</span></div>
+										<div><select id="idDay" name="idDay" data="" ms-duplex="member.brith_day"></select><span>{%member.brith_day%}</span></div>
+									</div>
+								</div>
+							</li>
+							<li>
+								<label for="" class="w20 f-fl">地区</label>
+								<div class="w80 f-fl local_input">
+									<div class="local_select">
+										<div><select id="s_province" name="s_province" datatype="Require" msg="请选择您所在省份" ms-duplex="member.province"></select><span>{%member.province%}</span></div>
+										<div><select id="s_city" name="s_city" datatype="Require" msg="请选择您所在城市" ms-duplex="member.city"></select><span>{%member.city%}</span></div>
+										<div><select id="s_county" name="s_county" datatype="Require" msg="请选择您所在区" ms-duplex="member.county"></select><span>{%member.county%}</span></div>
+									</div>
+								</div>
+							</li>
+						</ul>
+						<ul class="mt10">
+							<li>
+								<label for="" class="w20 f-fl">地址</label>
+								<div class="w80 f-fl"><textarea type="text" placeholder="请填写详细地址信息，以便礼品准确送到哟！" datatype="Require" msg="请填写详细地址信息" id="address" class="w100 f12_cb6b6b6 address_area abc" ms-duplex="member.address"/></textarea>
+							</li>
+							<li>
+								<label for="" class="w20 f-fl">邮箱</label>
+								<div class="w80 f-fl"><input type="email" placeholder="请填写邮箱地址" datatype="Email" msg="请输入正确的邮箱地址" id="email" class="w100 abc"  ms-duplex="member.email"/></div>
+							</li>
+						</ul>
+						<p class="pt10 pb10">
+							<a href="javascript:;" class="m_i_modify" ms-click="submit">确认修改</a>
+						</p>
+					</article>
+				</form>
+			</div>
+		</div>
+
+		<footer class="new_default_footer" ms-controller="Vip">
+	<ul class="new_footer">
+		<li><a href="/site/index/coupon"><b class="small_icon small_coupon"><i  ms-if="count.UnusedCoupon"></i></b><span>优惠劵</span></a></li>
+		<li><a href="/site/index/exchange"><b class="small_icon small_shopping"></b><span>积分商城</span></a></li>
+		<li><a href="/site/index/message"><b class="small_icon small_msg"><i  ms-if="count.UnreadMessage"></i></b><span>消息</span></a></li>
+		<li><a href="/site/index/index"><b class="small_center"><span>会员中心</span></b></a></li>
+	</ul>
+</footer>
+		<!-- 弹出框 -->
+		<article class="slider" style="display:block; ">
+			<div class="alertbox">
+				<form action="" name="form" id="updatePhoneForm">
+					<div class="a_b_phonenum">
+						<div>
+							<label for="" class="num_label">新手机号：</label>
+							<input type="tel" placeholder="请输入您的手机号码" datatype="Mobile" msg="请输入手机号码" value="" id="phoneNewNum" class="num_input"/>
+						</div>
+						<div>
+							<input type="text" id="code" placeholder="请输入验证码" datatype="Number" msg="验证码必须是数字" class="code_input"/>
+							<a href="#" class="get_code">获取验证码</a>
+						</div>
+					</div>
+					<div class="confirm">
+						<a href="#" class="suer" id="bindingSure">确定</a>
+						<a href="#" class="cancel" id="bindingCancel">取消</a>
+					</div>
+				</form>
+			</div>
+		</article>
+		<style>
+	.ms-controller, [ms-controller]{ visibility:hidden}
+	.theme_bg1 {
+		background:url(http://static.weiwubao.com/asset/apps/plugins/vip_v3/img/theme/bg1.png) no-repeat; background-size:100% 100%
+	}
+</style>
+
+<script type="text/javascript" src="http://static.weiwubao.com/asset/lib/js/jquery-1.11.0.min.js?1427772270"></script>
+<script type="text/javascript" src="http://static.weiwubao.com/asset/lib/js/ibox.js?1427772270"></script>
+<script type="text/javascript" src="http://static.weiwubao.com/asset/lib/js/wechat.api.js?1427772270"></script>
+<script>
+	App = {
+	mpid: '800194',
+		member: {"m_id":"2202067","mp_id":"800194","api_id":"oFq_CjnVqyO_vNjpwduvBYbYeh-o","fake_id":null,"group_id":"0","nickname":"女士包包精品店","short_address":"中国北京西城","sex":"2","avator":"http:\/\/static.weiwubao.com\/download\/avator\/member_oFq_CjnVqyO_vNjpwduvBYbYeh-o.jpg","regdate":"1427259279","integral":"0","game_integral":"0","update_time":"1427764831","last_message":"1427259279","last_message_id":"0","last_lottery":"0","status":"1","token":"142777182712359","truename":null,"introduce":null,"brith_year":null,"brith_month":null,"brith_day":null,"email":null,"mobphone":null,"address":null,"remark":null,"province":null,"city":null,"county":null,"school":null},
+		card: {"card_id":"147950","member_id":"2202067","mp_id":"800194","member_name":"女士包包精品店","member_tel":"--","card_number":"00147818","integral":"0","money":"0.00","cost":"0","exp":"0","level":"0","auto_lvlup":"1","discount":"1.00","creat_date":"1427259280","auth":"220206714277721693068","member_gifts":null,"member_gift":null,"deduct_lock":"0","grade_name":"普通会员","card_style":"11"},
+		url: {
+		Index: '/',
+		},
+	};
+		Api = window.Api || {};
+		Api.Url = {
+		Index: '/',
+			Register:'/site/index/register/', //领取会员卡
+			GetQrcode:'/site/index/get_code/',
+			LoadMessage:'/site/index/message/',
+			LoadCoupon:'/site/index/coupon/',
+			GetCouponQrcode:'/site/index/get_coupon_qrcode/',
+			SetCouponUsed:'/site/index/set_coupon_used/', //使用优惠券
+			CheckCouponUsed:'/site/index/check_coupon_used/', //检查优惠券是否使用
+			GetIntegralGoods:'/site/index/get_integral_goods/', //拉取积分商品
+			ConfirmExchange:'/site/index/confirm_exchange/', //兑换积分商品
+			GetRecord:'/site/index/record/', //获取操作记录
+			UpdateMmemberInfo:'/site/member/update/', //更新个人资料
+			DepositCardsShop:'/site/deposit/cards_shop/', //在售充值卡列表
+			MyDepositCards:'/site/deposit/cards/', //我的充值卡列表
+			CardRecharge:'/site/deposit/card_recharge/', //使用充值卡
+			CardRechargeSuccess:'/site/deposit/card_recharge_success/', //充值成功
+			CardCreateOrder:'/site/deposit/card_create_order/', //创建订单
+			CreateRechargeOrder:'/site/deposit/create_recharge_order/', //创建自助充值订单
+			RechargeRecord:'/site/deposit/record/', //充值记录
+			CardSetGiving:'/site/deposit/card_set_giving/', //转赠充值卡
+			CardSend:'/site/deposit/card_send/', //转赠充值卡
+			CardReceive:'/site/deposit/card_receive/', //接受充值卡
+			CardSetReceive:'/site/deposit/card_set_receive/', //确认领取充值卡操作
+			OfflineCardRecharge:'/site/deposit/offline_card_recharge/', //确认领取充值卡操作
+
+		},
+		//微信官方api组件
+		App.wechat = new wechatAPI();
+		App.wechat.mpid = '800194';
+		App.wechat.shareInit();
+		App.wechat.hideTopTool();
+</script>
+<script type="text/javascript" src="http://static.weiwubao.com/asset/lib/avalon/avalon.modern.js?1427772270"></script>
+<script type="text/javascript" src="http://static.weiwubao.com/asset/lib/js/app.js?1427772270"></script>
+<script type="text/javascript" src="http://static.weiwubao.com/asset/apps/vip/common/js/api.js?1427772270"></script>
+<script type="text/javascript" src="http://static.weiwubao.com/asset/apps/vip/common/js/vip.js?1427772270"></script>
+		<script src="http://static.weiwubao.com/asset/lib/js/inputCheck.js"></script>
+		<script>
+			App.count = {"UnreadMessage":0,"UnusedCoupon":0};
+			$(function() {
+				avalon.vm('Vip').init();
+				avalon.vm('Member').init();
+			});
+			// 生日&地区的div select
+			$(".local_select select").change(function(event) {
+				var $this = $(this);
+				var $value = $this.val();
+				$this.next("span").text($value);
+			});
+		</script>
+		<script src="http://static.weiwubao.com/asset/apps/plugins/vip_v3/js/jquery.calendar.js"></script>
+		<script>
+			$(document).ready(function() {
+				var myDate = new Date();
+				$("#dateSelector").DateSelector({
+					ctlYearId: 'idYear',
+					ctlMonthId: 'idMonth',
+					ctlDayId: 'idDay',
+					defYear: myDate.getFullYear(),
+					defMonth: (myDate.getMonth() + 1),
+					defDay: myDate.getDate(),
+					minYear: 1950,
+					maxYear: (myDate.getFullYear() + 0)
+				});
+			});
+		</script>
+		<script class="resources library" src="http://static.weiwubao.com/asset/apps/plugins/vip_v3/js/area.js" type="text/javascript"></script>    
+		<script type="text/javascript">
+			_init_area();
+			(function() {
+				var provincelist = $("#s_province").children('option');
+				provincelist.each(function(index, el) {
+					var province = $(el).val();
+					if (province == "") {
+						_select = $(this)[0];
+						_select.selected = true;
+						$(_select).trigger('change');
+					}
+				});
+
+				var citylist = $("#s_city").children('option');
+				citylist.each(function(index, el) {
+					var city = $(el).val();
+					if (city == "") {
+						_select = $(this)[0];
+						_select.selected = true;
+						$(_select).trigger('change');
+					}
+				});
+
+				var countylist = $("#s_county").children('option');
+				countylist.each(function(index, el) {
+					var county = $(el).val();
+					if (county == "") {
+						$(this)[0].selected = true;
+					}
+				});
+			})();
+		</script>
+    </body>
+</html>

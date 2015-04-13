@@ -1,0 +1,325 @@
+<include file="Restaurant:header"/>
+<body>
+<div class="container" id="j-container" ms-controller="App">
+
+<div ms-controller="Goods">
+    <!-- S 侧边内容 -->
+<div class="g-side" id="j-side" ms-controller="GoodsMenu">
+    <div class="sideMenu j-sideMenu anim">
+        <ul>
+            <li ms-repeat="menus"
+                ms-class-1="item-shen item:el.type == 0"
+                ms-class-2="diver:el.type == 1"
+                ms-class-3="hasSub:el.children">
+                <a href="javascript:;" ms-if="el.type == 0" ms-on-click="tap" ms-data-id="el.id">
+                    <div class="pic" ms-css-background-image="url('{%el.icon%}')"></div>
+                    <p class="title">{%el.name%}</p>
+                </a>
+            </li>
+            <li class="diver"></li>
+            <li class="item-yh" style="display: none;">
+                <a href="#"><div class="pic"></div><p class="title">优惠活动</p></a>
+            </li>
+            <li class="item-hy">
+                <a href="{pigcms::U('Wap/Restaurant/orderCheck',array('token'=>$token))}"><div class="pic"></div><p class="title">我的订单</p></a>
+            </li>
+            <li class="item-hy">
+                <a href="{pigcms::U('Wap/Card/index',array('token'=>$token, 'wecha_id'=>$wecha_id))}"><div class="pic"></div><p class="title">会员中心</p></a>
+            </li>
+        </ul>
+        <div style="height: 44px;"></div>
+    </div>
+
+    <div id="wapper1" class="wapper ">
+        <div class="wapper-inner j-content1">
+            <div class="subSideMenu j-subSideMenu f-n">
+                <!-- S 子菜单 -->
+                <ul class="f-dn"
+                    ms-repeat="menus"
+                    ms-if-loop="el.children">
+                    <li ms-data-pid="el.id"
+                        ms-data-id="cl.id"
+                        ms-class="item:cl.type == 0"
+                        ms-class-1="active:cl.id == activeMenu"
+                        ms-class-2="diver:cl.type == 1"
+                        ms-if="el.children"
+                        ms-repeat-cl="el.children"
+                        ms-on-click="tapChild">
+                        <div class="pic" ms-if="cl.type == 0"><img ms-src="{%cl.icon%}"/></div>
+                        <p class="title" ms-if="cl.type == 0">{%cl.name%}</p>
+                    </li>
+                </ul>
+                <ul class="f-n" style="display:block;">
+                    <li class="item-home j-backMainMenu"><a href="javascript:;"><div class="pic"></div><p class="title">主菜单</p></a></li>
+                </ul>
+                <div style="height: 44px;"></div>
+                <!-- E 子菜单 -->
+            </div>
+
+            <!--<a id="btn1" href="javascript:;">加载内容</a>-->
+        </div>
+    </div>
+
+</div>
+<!-- E 侧边内容 -->
+    <div class="g-main" id="j-main">
+
+        <div class="rongqi">
+            <!-- S 购物车按钮 -->
+            <a  ms-controller="CartNumber" ms-if="num" class="btn-cart" href="{pigcms::U('Wap/Restaurant/orderCheck',array('token'=>$token))}"><span>{%num%}</span></a>
+
+
+            <!-- E 购物车按钮 -->
+
+            <div id="wapper2" class="j-goods-list">
+                <div class="j-content2">
+                    <!-- S 分类说明文字 -->
+                    <div class="m-descri" ms-controller="GoodsMenu">
+                        <h2><span>{%activeMenuInfo.name%}</span></h2>
+
+                        <h3>BEAST GARDEN</h3>
+
+                        <p ms-if="activeMenuInfo.intro">{%activeMenuInfo.intro%}</p>
+
+                        <div class="small">Coffee | Light Food | Cocktail & Beverage</div>
+                    </div>
+                    <!-- E 分类说明文字 -->
+
+                    <!-- S 菜单列表 -->
+                    <ul class="m-menuList-ul" ms-controller="GoodsList">
+                        <li ms-repeat="list">
+                            <div class="m-menuList">
+                                <a ms-href="#view-goods-{%el.id%}"
+                                   class="j-view-goods m-menuList-link" ms-data-id="el.id">
+
+                                    <div class="img" ms-data-id="el.id"><img ms-src="$safe(el.cover)"/></div>
+
+                                    <div class="text">
+                                        <div class="title">
+                                            <h2>{%el.title%}<!-- <span class="tag">新品</span>--></h2>
+
+                                            <p>{%el.sub_title%}</p>
+                                        </div>
+                                        <div class="price">￥{%$defaultSpec(el.id).price%}</div>
+                                    </div>
+
+                                    <div class="dengdai" ms-if="el.need_wait == 1 && el.disabled == 0">
+                                        <div class="text2">
+                                            <p>爱我的人多，需要等我哟</p>
+                                        </div>
+                                    </div>
+                                    <div class="dengdai dengdai2" ms-if="el.disabled == 1">
+                                        <div class="text2">
+                                            <p>被吃光了</p>
+                                        </div>
+                                    </div>
+                                </a>
+
+                                <div class="action">
+                                    <div class="choose" ms-if="el.disabled == 0"><a
+                                            ms-click="add(el.id, $defaultSpec(el.id).id, $defaultSpec(el.id).price, el, $defaultSpec(el.id))"><i
+                                            class="u-icon u-icon-choose"></i>
+                                        <p>加入购物车</p></a></div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <!-- E 菜单列表 -->
+
+                    <img src="{pigcms::RES}/restaurant/default/img-mainFooter.png?1427772810"  />
+                    <style>
+                        .copyright{
+                            padding: 10px 0; text-align: center;
+                            font: 12px/1 "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
+                            color: #999;
+                            text-shadow: 1px 1px 0 #fff;
+                        }
+                        .copyright a{ color: #999; text-decoration: none;}
+                    </style>
+                    <div class="copyright"><a href="http://www.31by.com">高级餐饮</a>&copy;<a href="http://www.31by.com">商必营</a></div>
+                </div>
+            </div>
+
+            <include file="Restaurant:goodsDetail"/>
+        </div>
+    </div>
+    <!-- E 主体内容 -->
+</div>
+
+</div>
+
+<include file="Restaurant:publicjs"/>
+
+<script type="text/javascript" src="{pigcms::RES}/restaurant/default/goods.js?1427772810"></script>
+<script src="{pigcms::RES}/restaurant/default/ibox.js"></script>
+<script src="{pigcms::RES}/restaurant/default/comment.js"></script>
+<script>
+    (function () {
+        // 解决返回主菜单后,再点击已经高亮的菜单
+        App.on(App.event.MenuClicked, function (node) {
+            var $parent = $(node).closest('li');
+            if ($parent.length && $parent.hasClass('hasSub') && $parent.hasClass('active')) {
+                App.ui.tabMenuSub();
+            }
+        });
+
+        // 菜单商品加载时间过长,现实加载提示
+        var timeid = 0;
+        App.on(App.event.MenuGoodsLoading, function () {
+            timeid = setTimeout(function () {
+                ETMsg.loading();
+            }, 1000);
+        });
+        App.on(App.event.MenuGoodsLoaded, function () {
+            if (timeid) {
+                clearTimeout(timeid);
+            }
+            ETMsg.hide();
+        });
+
+        // 单个商品加载时间过长,现实加载提示
+        var timeid2 = 0;
+        App.on(App.event.GoodsLoading, function () {
+            timeid2 = setTimeout(function () {
+                ETMsg.loading();
+            }, 1000);
+        });
+        App.on(App.event.GoodsLoaded, function () {
+            if (timeid2) {
+                clearTimeout(timeid2);
+            }
+            ETMsg.hide();
+        });
+    })();
+
+    $(function () {
+        avalon.vm('GoodsMenu').$init();
+
+        var $goods = $('#j-goods');
+        var $goodsList = $('.j-goods-list');
+        var $plList = $('.j-pl-list');
+
+        // 页面载入时,触发一次hash改变事件
+        App.util.route('', true, true);
+
+        App.on(App.event.MenuClicked, function (node) {
+            App.route('', true, true);
+        });
+
+        // 绑定链接
+        $(document).on("click", ".j-view-goods[href^='#']", function (e) {
+            App.route($(this).attr("href"));
+        });
+        $(document).on("click", ".pl a[href^='#']", function (e) {
+            App.route($(this).attr("href"));
+        });
+        $(document).on("click", "[href^='#']", function (e) {
+            e.preventDefault();
+        });
+
+        
+      //如果有商品id,则直接跳转到商品详情
+        if({pigcms:$goods_id}){
+        	$goods.show();
+            $plList.hide();
+            $goodsList.hide();
+            avalon.vm('GoodsView').$init({pigcms:$goods_id});
+        }
+      
+        var commentInit = false;
+        App.on(App.event.Popstate, function (path) {
+            var id;
+            switch (true) {
+                // 查看商品
+                case path.indexOf('#view-goods') !== -1:
+                    id = path.split('-');
+                    if (id.length === 3) {
+                        id = id[2];
+                        $goods.show();
+                        $plList.hide();
+                        $goodsList.hide();
+                        avalon.vm('GoodsView').$init(id);
+                    }
+                    break;
+
+                // 查看评论
+                case path.indexOf('#view-comment') !== -1:
+                    $goodsList.hide();
+                    $goods.hide();
+                    $plList.show();
+
+                    id = path.split('-');
+                    if (id.length === 3) {
+                        id = id[2];
+
+                        $('#comment_list').empty();
+
+                        //cmt.config.styleUrl = 'http://static.31by.com/asset/lib/css/cmt.css';
+                        if (!commentInit) {
+                            window.comment = new window.comment();
+                            window.comment.config.mpid = '{pigcms:$wxuser.uid}';
+                            window.comment.config.item = 'restaurant';
+                            window.comment.config.item_id = id;
+                            window.comment.config.token = '{pigcms:$token}';
+                            window.comment.config.getCommentUrl = "{pigcms::U('Wap/Restaurant/getcomment',array('token'=>$token))}";
+                            window.comment.config.postCommentUrl = "{pigcms::U('Wap/Restaurant/postcomment',array('token'=>$token))}";
+                            window.comment.config.member_id = '{pigcms:$fans.id}';
+                            window.comment.config.member_nickname = '{pigcms:$fans.wechaname}';
+                            window.comment.config.member_avator = '{pigcms:$fans.portrait}';
+                            window.comment.config.page = '1';
+
+                            window.comment.display();
+                            commentInit = true;
+                        } else {
+                            window.comment.config.pull = true;
+                            window.comment.config.display_type = '2';
+                            window.comment.config.item_id = id;
+                            window.comment.config.page = '1';
+                            window.comment.get();
+                        }
+                    }
+                    break;
+
+                default:
+                    $goods.hide();
+                    $plList.hide();
+                    $goodsList.show();
+            }
+        });
+
+        var timer = true;
+        App.on(App.event.CartAdd, function () {
+
+            if (timer) {
+                timer = false;
+                $('.btn-cart span').addClass('a-bounce');
+                setTimeout(function () {
+                    $('.btn-cart span').removeClass('a-bounce').hide(0).show(0, function () {
+                        timer = true;
+                    });
+
+                }, 500);
+            }
+
+
+        });
+    });
+
+
+</script>
+
+
+</body>
+<script type="text/javascript">
+window.shareData = {  
+            "moduleName":"Restaurant",
+            "moduleID":"{pigcms:$_GET['id']|intval}",
+            "imgUrl": "{pigcms:$company.logourl}", 
+            "timeLineLink": "{pigcms::C('site_url')}{pigcms::U('Restaurant/index',array('token'=>$_GET['token']))}",
+            "sendFriendLink": "{pigcms::C('site_url')}{pigcms::U('Restaurant/index',array('token'=>$_GET['token']))}",
+            "tTitle": "{pigcms:$company.shortname}",
+            "tContent": "{pigcms:$company.intro}"
+        };
+</script>
+{pigcms:$shareScript}
+</html>
