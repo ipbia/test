@@ -39,15 +39,18 @@ class MessageAction extends UserAction{
 			$row['token']=$this->token;
 			$row['time']=time();
 			if ($row['msgtype']!='text'&&strpos($_SERVER['HTTP_HOST'],'pigcmszzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz')){
-				$this->error('小猪演示站禁止文件上传，所以请测试文本消息的发送，谢谢您的支持');
+				$this->error('商必营演示站禁止文件上传，所以请测试文本消息的发送，谢谢您的支持');
 			}
 			//
 			if (isset($_POST['mediasrc'])&&trim($_POST['mediasrc'])){
-				$url_get='https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$this->thisWxUser['appid'].'&secret='.$this->thisWxUser['appsecret'];
-				$json=json_decode($this->curlGet($url_get));
-				if (!$json->errmsg){
+				
+				$weixinapi = new WeixinApi($this->thisWxUser['appid'], $this->thisWxUser['appsecret'], $this->token, null);
+				$access_token = $weixinapi->getAccessToken();
+				$json = $weixinapi->error;
+				
+				if (!empty($access_token)){
 					$postMedia=array();
-					$postMedia['access_token']=$json->access_token;
+					$postMedia['access_token']=$access_token;
 					$postMedia['type']=$row['msgtype'];
 					$postMedia['media']=$_SERVER['DOCUMENT_ROOT'].str_replace('http://'.$_SERVER['HTTP_HOST'],'',$row['mediasrc']);
 					$rt=$this->curlPost('http://file.api.weixin.qq.com/cgi-bin/media/upload?access_token='.$postMedia['access_token'].'&type='.$postMedia['type'],array('media'=>'@'.$postMedia['media']));
@@ -97,13 +100,15 @@ class MessageAction extends UserAction{
 				$this->error('请选择图文消息',U('Message/index'));
 			}
 			//
-			$url_get='https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$this->thisWxUser['appid'].'&secret='.$this->thisWxUser['appsecret'];
-			$json=json_decode($this->curlGet($url_get));
+			$weixinapi = new WeixinApi($this->thisWxUser['appid'], $this->thisWxUser['appsecret'], $this->token, null);
+			$access_token = $weixinapi->getAccessToken();
+			$json = $weixinapi->error;
+			
 			$mediaids='';
 
-			if (!$json->errmsg){
+			if (!empty($access_token)){
 				$postMedia=array();
-				$postMedia['access_token']=$json->access_token;
+				$postMedia['access_token']=$access_token;
 				$postMedia['type']='image';
 				
 				foreach ($imgs as $img){
@@ -144,11 +149,14 @@ class MessageAction extends UserAction{
 			$row['time']=time();
 			//
 			$mediaids=explode(',',$_GET['mediaids']);
-			$url_get='https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$this->thisWxUser['appid'].'&secret='.$this->thisWxUser['appsecret'];
-			$json=json_decode($this->curlGet($url_get));
-			if (!$json->errmsg){
+			
+			$weixinapi = new WeixinApi($this->thisWxUser['appid'], $this->thisWxUser['appsecret'], $this->token, null);
+			$access_token = $weixinapi->getAccessToken();
+			$json = $weixinapi->error;
+			
+			if (!empty($access_token)){
 				$postMedia=array();
-				$postMedia['access_token']=$json->access_token;
+				$postMedia['access_token']=$access_token;
 				$imgidsArr=explode(',',$row['imgids']);
 				$imgidsArr=array_unique($imgidsArr);
 				$imgids=array();
@@ -260,9 +268,12 @@ class MessageAction extends UserAction{
 		$thisMessage=M('Send_message')->where(array('id'=>intval($_GET['id'])))->find();
 		if ($i<$count){
 			$fan=$fans[$i];
-			$url_get='https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$this->thisWxUser['appid'].'&secret='.$this->thisWxUser['appsecret'];
-			$json=json_decode($this->curlGet($url_get));
-			if (!$json->errmsg){
+			
+			$weixinapi = new WeixinApi($this->thisWxUser['appid'], $this->thisWxUser['appsecret'], $this->token, null);
+			$access_token = $weixinapi->getAccessToken();
+			$json = $weixinapi->error;
+			
+			if (!empty($access_token)){
 				
 				switch ($thisMessage['msgtype']){
 					case 'text':
@@ -298,7 +309,7 @@ class MessageAction extends UserAction{
 						break;
 				}
 				//
-				$rt=$this->curlPost('https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token='.$json->access_token,$data,0);
+				$rt=$this->curlPost('https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token='.$access_token,$data,0);
 				if($rt['rt']==false){
 					//$this->error('操作失败,curl_error:'.$rt['errorno']);
 				}else{

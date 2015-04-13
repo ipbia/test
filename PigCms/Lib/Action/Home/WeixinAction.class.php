@@ -2390,13 +2390,17 @@ class WeixinAction extends Action{
 	private	function _getAccessToken(){
 		$where=array('token'=>$this->token);
 		$this->thisWxUser=M('Wxuser')->where($where)->find();
-		$url_get='https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$this->thisWxUser['appid'].'&secret='.$this->thisWxUser['appsecret'];
-		$json=json_decode($this->curlGet($url_get));
-		if (!$json->errmsg){
+		
+		$weixinapi = new WeixinApi($this->thisWxUser['appid'], $this->thisWxUser['appsecret'], $this->token, null);
+		$access_token = $weixinapi->getAccessToken();
+		$json= $weixinapi->error;
+		
+		if (!empty($access_token)){
 		}else {
 			$this->error('获取access_token发生错误：错误代码'.$json->errcode.',微信返回错误信息：'.$json->errmsg);
 		}
-		return $json->access_token;
+		
+		return $access_token;
 	}
 	private function curlGet($url,$method='get',$data=''){
 		$ch = curl_init();

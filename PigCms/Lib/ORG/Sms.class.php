@@ -83,6 +83,10 @@ final class Sms {
 			$smsapi_senturl=C('sms_url');
 			$uid=C('uid');
 			$pwd=C('pwd');
+			if(empty($uid) || empty($pwd)){
+				$uid = C('sms_key');
+				$pwd = C('sms_sign');
+			}
 			$mobile=$data['mobile'];
 			$content=$data['content'];
 			$mobileids=C('mobileids');
@@ -230,9 +234,9 @@ final class Sms {
 		'uid'=>$uid, //用户账号
 		'pwd'=>md5($pwd.$uid), //MD5位32密码,密码和用户名拼接字符
 		'mobile'=>$mobile, //号码
-		'content'=>$content, //内容
 		'mobileids'=>$mobileids,
 		'time'=>$time, //定时发送
+		'content'=>$content, //内容
 		);
 		$re= Sms::postSMS($http,$data); //POST方式提交
 		return $re;

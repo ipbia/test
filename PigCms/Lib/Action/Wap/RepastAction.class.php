@@ -232,8 +232,12 @@ class RepastAction extends WapAction {
 		
 			
 			if ($doid) {
+				$company = M("Company")->where(array('token' => $this->token, 'id' => $this->_cid))->find();
+				
 				//TODO 短信提示
-				Sms::sendSms($this->token . "_" . $this->_cid, "顾客{$data['name']}刚刚预约了一个餐桌，订单号：{$data['orderid']}，请您注意查看并处理");
+				if($dishCompany['phone_status'] == 1){
+					Sms::sendSms($this->token . "_" . $this->_cid, "顾客{$data['name']}刚刚预约了一个餐桌，订单号：{$data['orderid']}，请您注意查看并处理【".$company['shortname']."】");
+				}
 				
 				if ($data['tableid']) {
 					$table_order = array('cid' => $this->_cid, 'tableid' => $data['tableid'], 'orderid' => $doid, 'wecha_id' => $this->wecha_id, 'reservetime' => $data['reservetime'], 'creattime' => time());
@@ -241,8 +245,6 @@ class RepastAction extends WapAction {
 					$t_table = M("Dining_table")->where(array('id' => $data['tableid']))->find();
 				}
 				
-			
-				$company = M("Company")->where(array('token' => $this->token, 'id' => $this->_cid))->find();
 				$op = new orderPrint();
 				$msg = array('companyname' => $company['name'], 'des' => $data['des'], 'companytel' => $company['tel'], 'truename' => $data['name'], 'tel' => $data['tel'], 'takeAwayPrice' => 0, 'address' => isset($data['address']) ? $data['address'] : '', 'buytime' => $data['time'], 'orderid' => $data['orderid'], 'sendtime' => $data['reservetime'], 'price' => 0, 'total' => 0);
 				$msg['typename'] =  '预约餐桌';
@@ -532,12 +534,15 @@ class RepastAction extends WapAction {
 		}
 			
 		if ($doid) {
+			$company = M("Company")->where(array('token' => $this->token, 'id' => $this->_cid))->find();
+			$dishCompany = M('Dish_company')->where(array('cid' => $this->_cid))->find();
+			
 			//TODO 短信提示
-			if ($userInfo['takeaway'] != 2) {
+			if ($dishCompany['phone_status'] == 1 && $userInfo['takeaway'] != 2) {
 				if ($userInfo['takeaway'] == 1) {
-					Sms::sendSms($this->token . "_" . $this->_cid, "顾客{$userInfo['name']}刚刚叫了一份外卖，订单号：{$userInfo['orderid']}，请您注意查看并处理");
+					Sms::sendSms($this->token . "_" . $this->_cid, "顾客{$userInfo['name']}刚刚叫了一份外卖，订单号：{$userInfo['orderid']}，请您注意查看并处理【".$company['shortname']."】");
 				} else {
-					Sms::sendSms($this->token . "_" . $this->_cid, "顾客{$userInfo['name']}刚刚预约了一次用餐，订单号：{$userInfo['orderid']}，请您注意查看并处理");
+					Sms::sendSms($this->token . "_" . $this->_cid, "顾客{$userInfo['name']}刚刚预约了一次用餐，订单号：{$userInfo['orderid']}，请您注意查看并处理【".$company['shortname']."】");
 				}
 			}
 			if ($userInfo['tableid']) {
@@ -546,7 +551,6 @@ class RepastAction extends WapAction {
 				$t_table = M("Dining_table")->where(array('id' => $userInfo['tableid']))->find();
 			}
 			
-			$company = M("Company")->where(array('token' => $this->token, 'id' => $this->_cid))->find();
 			$op = new orderPrint();
 			$msg = array('companyname' => $company['name'], 'des' => $userInfo['des'], 'companytel' => $company['tel'], 'truename' => $userInfo['name'], 'tel' => $userInfo['tel'], 'takeAwayPrice' => $takeAwayPrice, 'address' => isset($userInfo['address']) ? $userInfo['address'] : '', 'buytime' => $userInfo['time'], 'orderid' => $userInfo['orderid'], 'sendtime' => $userInfo['reservetime'], 'price' => $userInfo['price'], 'total' => $userInfo['total'], 'list' => $temp);
 			$msg['typename'] =  $userInfo['takeaway'] == 1 ? '外卖' : ($userInfo['takeaway'] == 2 ? '现场点餐' : '预约点餐');
@@ -558,8 +562,6 @@ class RepastAction extends WapAction {
 			$_SESSION[$this->session_dish_info] = $_SESSION[$this->session_dish_user] = '';
 			unset($_SESSION[$this->session_dish_info], $_SESSION[$this->session_dish_user]);
 			$alipayConfig = M('Alipay_config')->where(array('token' => $this->token))->find();
-			
-			$dishCompany = M('Dish_company')->where(array('cid' => $this->_cid))->find();
 			
 // 			if ($_POST['paymode'] == 1 && $alipayConfig['open'] && $dishCompany['payonline']) {
 // 				$this->success('正在提交中...', U('Alipay/pay',array('token' => $this->token, 'wecha_id' => $this->wecha_id, 'success' => 1, 'from'=> 'Repast', 'orderName' => $userInfo['orderid'], 'single_orderid' => $userInfo['orderid'], 'price' => $price)));
@@ -659,7 +661,7 @@ class RepastAction extends WapAction {
 				$msg = ArrayToStr::array_to_str($msg, 1);
 				$op->printit($this->token, $this->_cid, 'Repast', $msg, 1);
 				
-				Sms::sendSms($this->token . "_" . $this->_cid, "顾客{$order['name']}刚刚对订单号：{$orderid}的订单进行了支付，请您注意查看并处理");
+				Sms::sendSms($this->token . "_" . $this->_cid, "顾客{$order['name']}刚刚对订单号：{$orderid}的订单进行了支付，请您注意查看并处理【".$company['shortname']."】");
 				$model = new templateNews();
 				$model->sendTempMsg('TM00820', array('href' => U('Repast/myOrder',array('token' => $this->token, 'wecha_id' => $this->wecha_id, 'cid' => $this->_cid)), 'wecha_id' => $this->wecha_id, 'first' => '订餐交易提醒', 'keynote1' => '订单已支付', 'keynote2' => date("Y年m月d日H时i分s秒"), 'remark' => '预订成功，感谢您的光临，欢迎下次再次光临！'));
 			}

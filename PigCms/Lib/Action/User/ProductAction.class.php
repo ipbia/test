@@ -562,20 +562,13 @@ class ProductAction extends UserAction{
 		$pay_config_db=M('Alipay_config');
 		$this->payConfig=$pay_config_db->where(array('token'=>$this->token))->find();
 
-		$where=array('token'=>$this->token);
-		$thiswxuser=M('Wxuser')->where($where)->find();
 		//wecha_id   orderid   transactionid   
 		//deliver notify
 		$thiswxuser=M('Wxuser')->where(array('token'=>$this->token))->find();
-		$url_get='https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$thiswxuser['appid'].'&secret='.$thiswxuser['appsecret'];
-		$json=json_decode($this->curlGet($url_get));
-		if (!$json->errmsg){
-			//return array('rt'=>true,'errorno'=>0);
-		}else {
-			$this->error('获取access_token发生错误：错误代码'.$json->errcode.',微信返回错误信息：'.$json->errmsg);
-		}
+		$weixinapi = new WeixinApi($thiswxuser['appid'], $thiswxuser['appsecret'], $this->token, null);
+		$access_token = $weixinapi->getAccessToken();
 
-		$url='https://api.weixin.qq.com/pay/delivernotify?access_token='.$json->access_token;
+		$url='https://api.weixin.qq.com/pay/delivernotify?access_token='.$access_token;
 		$now=time();
 
 		$string1=sha1('appid='.$this->payConfig['appid'].'&appkey='.$this->payConfig['paysignkey'].'&deliver_msg=ok&deliver_status=1&deliver_timestamp='.$now.'&openid='.$_GET['wecha_id'].'&out_trade_no='.$_GET['orderid'].'&transid='.$_GET['transactionid'].'');

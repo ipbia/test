@@ -21,33 +21,20 @@ class templateNews{
 		$dataArr = array('href' => 'http://www.baidu.com' , 'wecha_id' => 'oLA6VjgLrB3qPspOBRMYZZJpVkGQ' , 'first' => '您好，您已成功预约看房。' , 'apartmentName' => '丽景华庭' , 'roomNumber' => 'A栋534' , 'address' => '广州市微信路88号', 'time' => '2013年10月30日 15:32', 'remark' => '请您准时到达看房。');
 	*/
 		$open = M('Tempmsg')->where(array('token'=>session('token'),'tempkey'=>"$tempKey"))->getField('status');
-	if($open){
-	// 获取配置信息
-		$dbinfo = M('Tempmsg')->where(array('token'=>session('token'),'tempkey'=>"$tempKey"))->find();
-
-
-	//	获取access_token  $json->access_token
-		$url_get='https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$this->thisWxUser['appid'].'&secret='.$this->thisWxUser['appsecret'];
-
-		$json=json_decode($this->curlGet($url_get));
-
-		if ($json->errmsg){
-			 
-			// $this->error('获取access_token发生错误：错误代码'.$json->errcode.',微信返回错误信息：'.$json->errmsg);
+		if($open){
+		// 获取配置信息
+			$dbinfo = M('Tempmsg')->where(array('token'=>session('token'),'tempkey'=>"$tempKey"))->find();
+	
+		//	获取access_token  $json->access_token
+			$weixinapi = new WeixinApi($this->thisWxUser['appid'], $this->thisWxUser['appsecret'], session('token'), $dataArr["wecha_id"]);
+			$access_token = $weixinapi->getAccessToken();
+	
+		// 准备发送请求的数据 
+			$requestUrl = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token='.$access_token;
+			$data = $this->getData($tempKey,$dataArr,$dbinfo['textcolor']);
+			$sendData = '{"touser":"'.$dataArr["wecha_id"].'","template_id":"'.$dbinfo["tempid"].'","url":"'.$dataArr["href"].'","topcolor":"'.$dbinfo["topcolor"].'","data":'.$data.'}';
+			$success = $this->postCurl($requestUrl,$sendData);
 		}
-
-
-	// 准备发送请求的数据 
-		$requestUrl = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token='.$json->access_token;
-
-		$data = $this->getData($tempKey,$dataArr,$dbinfo['textcolor']);
-
-		$sendData = '{"touser":"'.$dataArr["wecha_id"].'","template_id":"'.$dbinfo["tempid"].'","url":"'.$dataArr["href"].'","topcolor":"'.$dbinfo["topcolor"].'","data":'.$data.'}';
-
-
-		$this->postCurl($requestUrl,$sendData);
-		
-	}
 
 	}
 

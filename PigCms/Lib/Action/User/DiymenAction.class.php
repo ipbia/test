@@ -139,9 +139,11 @@ class DiymenAction extends UserAction{
 	public function  class_send(){
 		if(IS_GET){
 			//dump($api);
-			$url_get='https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$this->thisWxUser['appid'].'&secret='.$this->thisWxUser['appsecret'];
-			$json=json_decode($this->curlGet($url_get));
-			if (!$json->errmsg){
+			$weixinapi = new WeixinApi($this->thisWxUser['appid'], $this->thisWxUser['appsecret'], $this->token, null);
+			$access_token = $weixinapi->getAccessToken();
+			$json= $weixinapi->error;
+			
+			if (!empty($access_token)){
 				//return array('rt'=>true,'errorno'=>0);
 			}else {
 				$this->error('获取access_token发生错误：错误代码'.$json->errcode.',微信返回错误信息：'.$json->errmsg);
@@ -208,8 +210,8 @@ class DiymenAction extends UserAction{
 			}
 			$data.=']}';
 
-			file_get_contents('https://api.weixin.qq.com/cgi-bin/menu/delete?access_token='.$json->access_token);
-			$url='https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$json->access_token;
+			file_get_contents('https://api.weixin.qq.com/cgi-bin/menu/delete?access_token='.$access_token);
+			$url='https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$access_token;
 
 			$rt=$this->api_notice_increment($url,$data);
 

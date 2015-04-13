@@ -33,10 +33,10 @@ class RecognitionAction extends UserAction{
 			//dump($api);
 			if($api['appid']==false||$api['appsecret']==false){$this->error('必须先填写【AppId】【 AppSecret】');exit;}
 			//获取微信认证
-
-			$url_get='https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.trim($api['appid']).'&secret='.trim($api['appsecret']);
-			$json=json_decode($this->curlGet($url_get));
-			$qrcode_url='https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token='.$json->access_token;
+			$weixinapi = new WeixinApi(trim($api['appid']), trim($api['appsecret']), $this->token, null);
+			$access_token = $weixinapi->getAccessToken();
+			
+			$qrcode_url='https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token='.$access_token;
 			//{"action_name": "QR_LIMIT_SCENE", "action_info": {"scene": {"scene_id": 123}}}
 			$data['action_name']='QR_LIMIT_SCENE';
 			$data['action_info']['scene']['scene_id']=$recognition['id'];

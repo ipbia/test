@@ -327,13 +327,9 @@ class Wechat_groupAction extends UserAction{
     public function groupDelete(){
 	}
     public function _getAccessToken(){
-		$url_get='https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$this->thisWxUser['appid'].'&secret='.$this->thisWxUser['appsecret'];
-		$json=json_decode($this->curlGet($url_get));
-		if (!$json->errmsg){
-		}else {
-			$this->error('获取access_token发生错误：错误代码'.$json->errcode.',微信返回错误信息：'.$json->errmsg);
-		}
-		return $json->access_token;
+    	$weixinapi = new WeixinApi($this->thisWxUser['appid'], $this->thisWxUser['appsecret'], $this->token, $this->wecha_id);
+    	$access_token = $weixinapi->getAccessToken();
+    	return $access_token;
 	}
 
 }

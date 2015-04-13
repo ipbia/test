@@ -54,7 +54,10 @@ class AlipayAction extends BaseAction{
 		$payHandel=new payHandle($this->token,$_GET['from']);
 		$orderInfo=$payHandel->beforePay($orderid);
 		$price=$orderInfo['price'];
-		if(!$price)exit('必须有价格才能支付');
+		if(!$price){
+			$this->success('订单已提交,要有价格才能继续支付!', U($_GET['from'].'/index', array('token' => $this->token, 'wecha_id' => $this->wecha_id)));
+			exit('必须有价格才能支付');
+		}
 		$from=isset($_GET['from'])?$_GET['from']:'shop';
 		$alipayConfig = $this->alipayConfig;
 		
@@ -117,7 +120,10 @@ class AlipayAction extends BaseAction{
 		$payHandel=new payHandle($this->token,$_GET['from']);
 		$orderInfo=$payHandel->beforePay($orderid);
 		$price=$orderInfo['price'];
-		if(!$price)exit('必须有价格才能支付');
+		if(!$price){
+			$this->success('订单已提交,要有价格才能继续支付!', U($_GET['from'].'/index', array('token' => $this->token, 'wecha_id' => $this->wecha_id)));
+			exit('必须有价格才能支付');
+		}
 		$from=isset($_GET['from'])?$_GET['from']:'shop';
 		$alipayConfig = $this->alipayConfig;
 		//反序列化得到支付的配置信息

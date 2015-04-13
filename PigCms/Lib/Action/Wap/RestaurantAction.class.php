@@ -131,7 +131,11 @@ class RestaurantAction extends StoreAction{
 		$goods = $this->createGoodsItem($product);
 		//获取商品展示图片
 		$productimage = M('Product_image')->field('image')->where(array('pid'=>$id))->select();
-		$goods['img'] = $productimage;
+		$imgs = array();
+		foreach ($productimage as $key=>$value){
+			$imgs[] = $value['image'];
+		}
+		$goods['img'] = $imgs;
 		
 		$goods['goods'] = $goods;
 		$goods['spec'][]  = $this->createSpecItem($product);
@@ -174,8 +178,8 @@ class RestaurantAction extends StoreAction{
 	 */
 	private function createGoodsItem($value){
 		$item['id'] = $value['id'];
-		$item['disabled'] 	= 0;
-		$item['need_wait'] 	= 0;
+		$item['disabled'] 	= intval($value['num']) > 0 ? 0 : 1; //显示是否卖光了
+		$item['need_wait'] 	= 0;//显示是否需要等待
 		$item['time_cost'] 	= 0;
 		$item['type_id'] 	= $value['catid'];
 		$item['title'] 		= $value['name'];
@@ -186,7 +190,7 @@ class RestaurantAction extends StoreAction{
 		$item['recommend'] 	= $value['recommend'];	//推荐
 		$item['comment_number'] = $value['comment_number'];//评论数
 		$item['liked'] 		= $value['liked'];		//喜欢数
-		$item['is_new']    	= $value['is_new'];		//是否最新
+		$item['is_new']    	= $value['is_new'];		//是否新品
 		$item['goods_id']  	= $value['id'];
 		$item['cid'] 	   	= $value['cid'];
 		$item['sort'] 	   	= $value['sort'];
@@ -195,7 +199,7 @@ class RestaurantAction extends StoreAction{
 		$item['salecount'] 	= $value['salecount'];
 		$item['dining'] 	   	= $value['dining'];
 		$item['fakemembercount'] = $value['fakemembercount'];//销量基数
-		$item['num'] 	   	= $value['num'];
+		$item['num'] 	   	= $value['num'];//库存
 		$item['status'] 	= $value['status'];
 		
 		$product_user = M('product_user')->where(array('pid'=>$item['id']))->find();
@@ -217,6 +221,34 @@ class RestaurantAction extends StoreAction{
 		$spec_item['original_price']	= $value['oprice'];
 		
 		return $spec_item;
+	}
+	
+	/**
+	 * 获取会员优惠卷(代金卷)
+	 */
+	public function memberCoupons(){
+		$type 		= 2;//代金卷
+		$is_use 	= $this->_get('is_use','intval')?$this->_get('is_use','intval'):'0';
+		$now=time();
+		$where 	= array('token'=>$this->token,'wecha_id'=>$this->wecha_id,'coupon_type'=>$type,'is_use'=>"$is_use");
+		
+		$data 	= M('Member_card_coupon_record')->where($where)->field('id,cardid,coupon_id,coupon_type,add_time,is_use')->select();
+		
+		foreach($data as $key=>$value){
+			$cwhere 		= array('token'=>$this->token,'cardid'=>$value['cardid'],'id'=>$value['coupon_id']);
+			$cinfo			= M('Member_card_coupon')->where($cwhere)->field('pic,statdate,enddate as expires_date,title,price')->find();
+			if($cinfo['expires_date']>$now && $cinfo['statdate']<$now){
+				$data[$key] = array_merge($value,$cinfo);
+			}else{
+				unset($data[$key]);
+			}
+		}
+		if($data){
+			exit(json_encode(array('status' => true, 'code'=>0, 'msg'=>'','data'=>$data)));
+		}else{
+			exit(json_encode(array('status' => false, 'code'=>0, 'msg'=>'','data'=>'')));
+		}
+		
 	}
 	
 	/**
@@ -478,6 +510,32 @@ class RestaurantAction extends StoreAction{
 					}
 				}
 			}
+			
+			//如果有优惠卷，则扣掉优惠卷金额
+			if(isset($_POST['params']['coupons'])){
+				$type 		= 2;//代金卷
+				$is_use 	= $this->_get('is_use','intval')?$this->_get('is_use','intval'):'0';
+				$now=time();
+				$ids = '';
+				foreach ($_POST['params']['coupons'] as $key=>$value){
+					if($key == 0){
+						$ids = $value;
+					}else{
+						$ids .= ',' + $value ;
+					}
+				}
+				$where 	= array('token'=>$this->token,'wecha_id'=>$this->wecha_id,'coupon_type'=>$type,'is_use'=>"$is_use",'id'=> array('exp',' IN ('.$ids.') '));
+				$data 	= M('Member_card_coupon_record')->where($where)->field('id,cardid,coupon_id,coupon_type,add_time,is_use')->select();
+				
+				foreach($data as $key=>$value){
+					$cwhere 		= array('token'=>$this->token,'cardid'=>$value['cardid'],'id'=>$value['coupon_id']);
+					$cinfo			= M('Member_card_coupon')->where($cwhere)->field('statdate,enddate,price')->find();
+					if($cinfo['enddate']>$now && $cinfo['statdate']<$now){
+						$total_price -= $cinfo['price'];
+					}
+				}
+			}
+			
 			$data = array('price'=>$total_price, 'promotion'=>array(), 'errors'=>array());
 			exit(json_encode(array('status' => true, 'code'=>0, 'msg'=>'', 'data'=>$data)));
 		}
@@ -596,6 +654,44 @@ class RestaurantAction extends StoreAction{
 				
 			$setting = M('Product_setting')->where(array('token' => $this->token, 'cid' => $cid))->find();
 			$saveprice = $totalprice = $calCartInfo[1] + $calCartInfo[2];
+			
+			//如果有优惠卷，则扣掉优惠卷金额
+			if(isset($_POST['params']['coupons'])){
+				$coupon_type = 2;//代金卷
+				$now  =time();
+				$ids = '';
+				foreach ($_POST['params']['coupons'] as $key=>$value){
+					if($key == 0){
+						$ids = $value;
+					}else{
+						$ids .= ',' + $value ;
+					}
+				}
+				
+				$where 	= array('token'=>$this->token,'wecha_id'=>$this->wecha_id,'coupon_type'=>$coupon_type,'is_use'=>"0",'id'=> array('exp',' IN ('.$ids.') '));
+				$coupons = M('Member_card_coupon_record')->where($where)->field('id,coupon_id')->select();
+
+				if($coupons != false){
+					foreach ($coupons as $key=>$value){
+						if($value['coupon_id']){
+							//读取价格
+							$where 	= array('token'=>$this->token,'id'=> $value['coupon_id']);
+							$price_result = M('Member_card_coupon')->where($where)->field('price')->find();
+							
+							if($price_result != false){
+								$totalprice -= intval($price_result['price']);
+								
+								//标识优惠卷已经使用
+								$where 	= array('token'=>$this->token,'id'=> $value['id']);
+								$coupon_data['is_use'] = "1";
+								$coupon_data['use_time'] = $now;
+								M('Member_card_coupon_record')->where($where)->save($coupon_data);
+							}
+						}
+					}
+				}
+			}
+			
 			if ($score && $setting && $setting['score'] > 0 && $this->fans['total_score'] >= $score) {
 				$s = isset($cartObj['score']) ? intval($cartObj['score']) : 0;
 				$totalprice -= ($score + $s) / $setting['score'];
@@ -655,7 +751,10 @@ class RestaurantAction extends StoreAction{
 				$op->printit($this->token, $this->_cid, 'Store', $msg, 0);
 		
 				$userInfo = D('Userinfo')->where(array('token' => $this->token, 'wecha_id' => $wecha_id))->find();
-				Sms::sendSms($this->token, "您的顾客{$row['truename']}刚刚下了一个订单，订单号：{$orderid}，手机号：{$row['tel']}请您注意查看并处理");
+				
+				if($setting['email_status'] == 1){
+					Sms::sendSms($this->token, "您的顾客{$row['truename']}刚刚下了一个订单，订单号：{$orderid}，手机号：{$row['tel']}请您注意查看并处理【".$company['shortname']."】");
+				}
 			}
 		}
 		
@@ -702,6 +801,7 @@ class RestaurantAction extends StoreAction{
 				}
 				$_SESSION[$this->session_cart_name] = null;
 				unset($_SESSION[$this->session_cart_name]);
+				
 				//保存个人信息
 				if ($_POST['saveinfo']) {
 					$this->assign('thisUser', $thisUser);
@@ -838,7 +938,7 @@ class RestaurantAction extends StoreAction{
 		$orderid = $_GET['orderid'];
 		if ($order = M('Product_cart')->where(array('orderid' => $orderid, 'token' => $this->token))->find()) {
 			//TODO 发货的短信提醒
-			if ($order['paid']) {
+			//if ($order['paid']) {
 				$carts = unserialize($order['info']);
 				$tdata = $this->getCat($carts);
 				$list = array();
@@ -856,12 +956,17 @@ class RestaurantAction extends StoreAction{
 						$list[] = $t;
 						$salecount = $va['count'];
 					}
-					D("Product")->where(array('id' => $va['id']))->setInc('salecount', $salecount);
+					if ($order['paid']) {
+						D("Product")->where(array('id' => $va['id']))->setInc('salecount', $salecount);
+					}
 				}
 	
-				if ($order['twid']) {
-					$this->savelog(3, $order['twid'], $this->token, $order['cid'], $order['totalprice']);
+				if ($order['paid']) {
+					if ($order['twid']) {
+						$this->savelog(3, $order['twid'], $this->token, $order['cid'], $order['totalprice']);
+					}
 				}
+				
 	
 				$company = D('Company')->where(array('token' =>$this->token, 'id' => $order['cid']))->find();
 				$op = new orderPrint();
@@ -869,10 +974,27 @@ class RestaurantAction extends StoreAction{
 				$msg = ArrayToStr::array_to_str($msg, 1);
 				$op->printit($this->token, $this->_cid, 'Store', $msg, 1);
 				$userInfo = D('Userinfo')->where(array('token' => $this->token, 'wecha_id' => $this->wecha_id))->find();
-				Sms::sendSms($this->token, "您的顾客{$userInfo['truename']}刚刚对订单号：{$orderid}的订单进行了支付，请您注意查看并处理");
-				$model = new templateNews();
-				$model->sendTempMsg('TM00820', array('href' => U('Store/my',array('token' => $this->token, 'wecha_id' => $this->wecha_id, 'cid' => $this->_cid, 'twid' => $this->_twid)), 'wecha_id' => $this->wecha_id, 'first' => '购买商品提醒', 'keynote1' => '订单已支付', 'keynote2' => date("Y年m月d日H时i分s秒"), 'remark' => '购买成功，感谢您的光临，欢迎下次再次光临！'));
-			}
+				
+				$company_shortname = $company['shortname'];
+				//发送短信提醒
+				
+				if($order['paid']){
+					Sms::sendSms($this->token, "您的顾客{$userInfo['truename']}刚刚对订单号：{$orderid}的订单进行了支付，请您注意查看并处理【".$company_shortname."】");
+					$model = new templateNews();
+					$model->sendTempMsg('TM00820', array('href' => C('site_url').U('Restaurant/orderList',array('token' => $this->token, 'wecha_id' => $this->wecha_id, 'cid' => $this->_cid, 'twid' => $this->_twid)), 'wecha_id' => $this->wecha_id, 'first' => '购买商品提醒', 'keynote1' => '订单已支付', 'keynote2' => date("Y年m月d日H时i分s秒"), 'remark' => '购买成功，感谢您的光临，欢迎下次再次光临！'));
+				}else{
+					if(strtolower($order['paytype']) == strtolower('daofu')){
+						Sms::sendSms($this->token, "您的顾客{$userInfo['truename']}刚刚对订单号：{$orderid}的订单选择[货到付款]，请您注意查看并处理【".$company_shortname."】");
+						$model = new templateNews();
+						$model->sendTempMsg('TM00820', array('href' => C('site_url').U('Restaurant/orderList',array('token' => $this->token, 'wecha_id' => $this->wecha_id, 'cid' => $this->_cid, 'twid' => $this->_twid)), 'wecha_id' => $this->wecha_id, 'first' => '购买商品提醒', 'keynote1' => '未支付【货到付款】', 'keynote2' => date("Y年m月d日H时i分s秒"), 'remark' => '购买成功，感谢您的光临，欢迎下次再次光临！'));
+					}else if(strtolower($order['paytype']) == strtolower('dianfu')){
+						Sms::sendSms($this->token, "您的顾客{$userInfo['truename']}刚刚对订单号：{$orderid}的订单选择[到店付款]，请您注意查看并处理【".$company_shortname."】");
+						$model = new templateNews();
+						$model->sendTempMsg('TM00820', array('href' => C('site_url').U('Restaurant/orderList',array('token' => $this->token, 'wecha_id' => $this->wecha_id, 'cid' => $this->_cid, 'twid' => $this->_twid)), 'wecha_id' => $this->wecha_id, 'first' => '购买商品提醒', 'keynote1' => '未支付【到店付款】', 'keynote2' => date("Y年m月d日H时i分s秒"), 'remark' => '购买成功，感谢您的光临，欢迎下次再次光临！'));
+					}
+				}
+			//}
+			
 			$this->redirect(U('Restaurant/orderList',array('token' => $this->token,'wecha_id' => $this->wecha_id, 'cid' => $this->_cid, 'twid' => $this->_twid)));
 		}else{
 			exit('订单不存在');

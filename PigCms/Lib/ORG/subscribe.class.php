@@ -17,11 +17,10 @@ class subscribe {
 		
 		if($this->thisWxUser['appid'] && $this->thisWxUser['appsecret']&&$this->thisWxUser['winxintype']==3){
 			//服务号
-			$url_get='https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$this->thisWxUser['appid'].'&secret='.$this->thisWxUser['appsecret'];
+			$weixinapi = new WeixinApi($this->thisWxUser['appid'], $this->thisWxUser['appsecret'], $this->token, $this->wecha_id);
+			$access_token = $weixinapi->getAccessToken();
 
-			$json=json_decode($this->curlGet($url_get));
-
-			$url='https://api.weixin.qq.com/cgi-bin/user/info?openid='.$this->wecha_id.'&access_token='.$json->access_token;
+			$url='https://api.weixin.qq.com/cgi-bin/user/info?openid='.$this->wecha_id.'&access_token='.$access_token;
 			$classData=json_decode($this->curlGet($url));
 			
 			if ($classData->subscribe&&$classData->subscribe==1){

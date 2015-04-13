@@ -23,11 +23,8 @@ class WechatShare
 		$share_data 	= M('Wxuser')->where(array('token'=>$this->token))->field('share_ticket,share_dated')->find();
 		
 		if( (empty($share_data['share_ticket']) || empty($share_data['share_dated']) ) || ($share_data['share_ticket']!='' && $share_data['share_dated']!='' && $share_data['share_dated'] < $now ) ){
-			$tokenData 	= $this->getToken();
-			if($tokenData['errcode']){
-				$this->error['token_error'] 	= array('errcode'=>$tokenData['errcode'],'errmsg'=>$tokenData['errmsg']);
-			}else{
-				$access_token 	= $tokenData['access_token'];
+			$access_token 	= $this->getToken();
+			if(!empty($access_token)){
 				$ticketData 	= $this->getTicket($access_token);
 				if($ticketData['errcode']>0){
 					$this->error['ticket_error'] 	= array('errcode'=>$ticketData['errcode'],'errmsg'=>$ticketData['errmsg']);
@@ -126,8 +123,10 @@ class WechatShare
 	
 	//获取token
 	public function  getToken(){
-		$url 	= "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".$this->appId."&secret=".$this->appSecret;
-		return $this->https_request($url);
+		$weixinapi = new WeixinApi($this->appId, $this->appSecret, $this->token, $this->wecha_id);
+		$access_token = $weixinapi->getAccessToken();
+		
+		return $access_token;
 	}
 
 	public function getTicket($token){
@@ -235,6 +234,17 @@ class WechatShare
 	    });
 		
 	});
+	
+  // 9.1.2 扫描二维码并返回结果
+  function scanQRCode(desc ＝ '扫一扫二维码') {
+    wx.scanQRCode({
+      needResult: 1,
+      desc: '',
+      success: function (res) {
+        alert(JSON.stringify(res));
+      }
+    });
+  }
 		
 	function shareHandle(to) {
 		var submitData = {

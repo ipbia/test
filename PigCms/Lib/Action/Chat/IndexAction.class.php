@@ -257,9 +257,10 @@ class IndexAction extends ChatAction{
 		//dump($api);
 		if($api['appid']==false||$api['appsecret']==false){$this->error('必须先填写【AppId】【 AppSecret】');exit;}
 		//获取微信认证
-		$url_get='https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$api['appid'].'&secret='.$api['appsecret'];
-		$json=json_decode($this->curlGet($url_get));
-		$qrcode_url='https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token='.$json->access_token;
+		$weixinapi = new WeixinApi($api['appid'], $api['appsecret'], session('token'), $openid);
+		$access_token = $weixinapi->getAccessToken();
+		
+		$qrcode_url='https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token='.$access_token;
 		$data='{
 			"touser":"'.$openid.'",
 			"msgtype":"text",

@@ -25,6 +25,13 @@ class CardAction extends WapAction{
 			$this->amap=new amap();
 		}
 	}
+	
+	public function share(){
+		$share 	= new WechatShare($this->wxuser['appid'],$this->wxuser['appsecret'],$this->token,$this->wecha_id);
+		$share->hideOutShare();
+		$this->shareScript=$share->getSgin();
+		$this->assign('shareScript',$this->shareScript);
+	}
 	public function index(){
         //dump($_SESSION['token_openid_kvdhyj1396063025']);
 		//transfer start
