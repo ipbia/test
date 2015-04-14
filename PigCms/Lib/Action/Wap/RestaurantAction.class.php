@@ -547,6 +547,22 @@ class RestaurantAction extends StoreAction{
 	 * 提交订单
 	 */
 	public function orderSubmit(){
+		//如果不支持外卖，只能在店消费，则验证用户合法性(是否在店扫描二信码)
+		$setting = $this->_set;
+		if($setting && $setting['paymode'] == '0'){
+			$name = $this->token()."_extend";
+			$extend_value = session($name);
+			//如果没扫描二维码或是用户信息失效
+			if(empty($extend_value)){
+				if($this->isAjax()){
+					exit(json_encode(array('status' => false, 'code'=>1001, 'msg'=>'用户信息失效,请重新扫描餐桌上二维码!', 'data'=>null)));
+				}else{
+					$this->error('用户信息失效,请重新扫描餐桌上二维码!');
+				}
+			}
+		}
+		
+		
 		//paymode 1:在线支付, 2:财付通, 3:货到付款, 4:会员卡支付 , 5:积分兑换
 		//paytype alipay:支付宝,weixin:微信支付,tenpay:财付通[wap手机],tenpayComputer:财付通[即时到帐],
 		//		  yeepay:易宝支付,allinpay:通联支付, daofu:货到付款, dianfu:到店付款, chinabank:网银在线

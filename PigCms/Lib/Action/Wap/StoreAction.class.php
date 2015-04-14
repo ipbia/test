@@ -138,6 +138,23 @@ class StoreAction extends WapAction{
 	}
 	
 	/**
+	 * 扫描二维码，验证用户扩展信息
+	 */
+	public function scanQRCode(){
+		//二维码扩展字段信息，如桌号，编号等自定义数据
+		if(isset($_GET) && $_GET['extend']){
+			$name = $this->token()."_extend";
+			//初始化session设置
+			$name['name'] 	= $name;
+			$name['expire'] = 7200;
+			session($name);
+			
+			//保存扩展字段
+			session($name, $_GET['extend']);
+		}
+	}
+	
+	/**
 	 * 商城首页
 	 */
 	public function index() 

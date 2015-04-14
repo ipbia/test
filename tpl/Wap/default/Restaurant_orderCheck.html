@@ -316,6 +316,12 @@
     (function() {
 
         avalon.vm('Order').$init();
+        //是否支持外卖，如果非外卖，则不用填写用户收货信息
+        avalon.vm('Order').saveinfo({pigcms:$productSet.paymode});
+        //显示收货信息按钮
+        if({pigcms:$productSet.paymode}){
+        	$('.choose1').show();
+        }
 
         $(function() {
             App.on(App.event.OrderSubmitting, function() {

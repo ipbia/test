@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>{pigcms::C('site_title')}</title>
+    <meta content="{pigcms::C('keyword')}" name="Keywords">
+    <meta content="{pigcms::C('content')}" name="Description">
+    <script src="{pigcms::RES}/js/html5.js?BPm"></script>
+	<link rel="stylesheet" type="text/css" href="{pigcms::RES}/css/bootstrap_min.css?BPm" media="all" />
+    <link rel="stylesheet" type="text/css" href="{pigcms::RES}/css/index.css?BPm" media="all" />
+<script type="text/javascript" src="{pigcms::RES}/js/jQuery.js?BPm"></script>
+<script type="text/javascript" src="{pigcms::RES}/js/carouFredSel.js?BPm"></script>
+<script type="text/javascript" src="{pigcms::RES}/js/beta-index.js?BPm"></script>
+	<link rel="shortcut icon" href="{pigcms::RES}/images/favicon.ico" />
+</head>
+<body>
+	<!--[if lte IE 8]>  <script language="javascript">$(function (){$.browser.msie&&$("#ie9-tips").show().find("#stopSuggestA").click(function(){$("#ie9-tips").hide()})})</script><![endif]-->
+<div class="nav clearfix">
+	<div class="nav-content">
+		<h1 class="left"><a href="/">{pigcms::C('site_name')}·微信营销，如此简单！</a></h1>
+		<div class="left city">
+        <if condition="$_SESSION[uid]==false">
+			<h2><a href="{pigcms::U('Home/Index/city')}">
+					全球代理查询<i class="tri4"></i>
+				</a></h2>
+
+			<else/>
+				<h2>你好</h2>
+				<a><span style="color:red">{pigcms:$Think.session.uname}</span></a>
+	       </if>
+		</div>
+		<div class="right line-li">
+        
+			 <ul>
+        <li><a href="{pigcms::U('Home/Index/index')}"<eq name="ACTION_NAME" value="index">class="hover"</eq>>首页</a></li>
+		<li><a href="{pigcms::U('Home/Index/news')}" <eq name="ACTION_NAME" value="news">class="hover"</eq> >媒体报道</a></li>
+        <li><a href="{pigcms::U('Home/Index/common')}" <eq name="ACTION_NAME" value="common">class="hover"</eq> >经典案例</a></li>
+		<li><a href="http://hxtcms.taobao.com/" target="_black" <eq name="ACTION_NAME" value="taobao">class="hover"</eq> >源码购买</a></li>
+	    <li class="nav_menu_li_1"><a style="width:70px; text-align:left;" class="_hover">产品中心<i></i></a>
+					 <div class="sub-nav">
+						 <a href="{pigcms::U('Home/Index/price')}">资费套餐</a>
+					 </div>
+	    </li>
+        <li><a href="{pigcms::U('Home/Index/proxy')}" <eq name="ACTION_NAME" value="proxy">class="hover"</eq> >渠道代理</a> </li>
+		<li><a href="{pigcms::U('Home/Index/fc')}" <eq name="ACTION_NAME" value="fc">class="hover"</eq> >功能介绍</a></li>		
+        <li class="nav_menu_li_1"><a style="width:70px; text-align:left;" class="_hover" target="_black">帮助中心<i></i></a>
+					 <div class="sub-nav">
+						 <a href="{pigcms::U('Home/Index/help')}">使用指南</a>
+						 <a href="http://bbs.100huimall.com/" target="_black">官方论坛</a>
+						 <a href="http://wpa.qq.com/msgrd?v=3&uin={pigcms:$f_qq}&site=qq&menu=yes" target="_black">在线咨询</a>
+					 </div>
+        </li>
+    </ul>
+
+            <div class="account">
+	       <if condition="$_SESSION[uid]==false">
+           <a href="{pigcms::U('Home/Index/reg')}" class="btn-reg btn0" >注册</a>
+           <a href="javascript:;" class="btn-login btn0" onclick="if(location.hostname.indexOf('.cn')>-1){location.href=''; return false;} loginBox.toggle(this, event);">登录</a>
+						<div id="qrcode" class="qrcode">
+					<div>
+						<a id="switch" href="javascript:;"  class="switch"></a>
+						<div id="qrcode_body" class="qrcode_body">
+						</div>
+					</div>
+				</div>
+	         <else/>
+           <a href="{pigcms::U('User/Index/index')}" hidefocus="true" class="btn-reg btn0">管理</a>
+		  <a href="javascript:void(0)" class="btn-login btn0" onclick="Javascript:window.open('{pigcms::U('System/Admin/logout')}','_blank')">退出</a>
+						<div id="qrcode" class="qrcode">
+					<div>
+						<a id="switch" href="javascript:;"  class="switch"></a>
+						<div id="qrcode_body" class="qrcode_body">
+						</div>
+					</div>
+				</div>		  
+		  </if>	  
+		</div>
+		</div>
+	</div>
+</div>
+	<div id="loginBox">
+		<div class="login-panel">
+			<h3>登录</h3>
+			<div class="login-mod">
+				<div class="login-err-panel dn" id="err_area">
+					<span class="icon-wrapper"><i class="icon24-login err" style="margin-top:-.2em;*margin-top:0;"></i></span>
+					<span id="err_tips"></span>
+				</div>
+				<form action="{pigcms::U('Users/checklogin')}" method="post"  class="login-form" id="login-form">
+					<div class="login-un">
+						<span class="icon-wrapper"><i class="icon24-login un"></i></span>
+						<input type="text" id="username" placeholder="{pigcms::C('site_name')}帐号">
+					</div>
+					<div class="login-pwd">
+						<span class="icon-wrapper"><i class="icon24-login pwd"></i></span>
+						<input type="password" id="password" name="password" placeholder="密码">
+					</div>
+				</form>
+				<div class="login-help-panel">
+					<a id="rememberPwd" class="login-remember-pwd" href="javascript:;">
+						<input type="checkbox" id="rememberPwdIcon">记住帐号
+					</a>
+					<a class="login-forget-pwd" href="{pigcms::U('Home/Index/regpwd')}">忘记密码？</a>
+                    <a class="login-forget-pwd" href="{pigcms::U('Home/Index/reg')}">新用户注册</a>
+				</div>
+				<div class="login-btn-panel">
+					<a class="login-btn" title="点击登录" href="javascript:;" id="login_button" onclick="login();">登录</a>
+				</div>
+			</div>
+		</div>
+		<div class="login-cover" onclick="loginBox.toggle(this, event);"></div>
+	</div>
+<div id="ie9-tips" class="clearfix">
+	<div id="tipsPanel">
+		<div id="tipsDesc">系统检测到您所使用的浏览器版本较低，推荐使用<a href="http://www.firefox.com.cn/download/" target="_blank">Firefox</a>或<a href="http://www.google.cn/intl/zh-CN/chrome/browser/index.html" target="_blank">Chrome</a>浏览器打开，否则将无法体验完整产品功能。</div>
+		<a id="stopSuggestA" href="javascript:;">×</a>
+	</div>
+</div>
+
+<script>
+var $do_submit = false;
+
+// 绑定回车键
+$('#loginBox').keydown(function(e){
+	if(13 == event.keyCode){
+		login();
+	}
+});
+
+	function login()
+	{
+		if (true == $do_submit)
+		{
+			return false;
+		}
+
+		var $pre_submit = '登录', $done_submit = '登录中...';
+		var $username = $('#username').val(), $password = $('#password').val(), $keepalive = $('#rememberPwdIcon').val();
+		$('#login_button').text($done_submit);
+		$do_submit = true;
+
+		// check
+		if ('' == $username || '' == $password)
+		{
+			$('#err_tips').text('您输入的帐号或密码错误，请重新输入！');
+			$('#err_area').show();
+			$('#login_button').text($pre_submit);
+			$do_submit = false;
+			return false;
+		}
+
+		var $login_data = {
+			username:$username,
+			password:$password,
+			keepalive:$keepalive
+		};
+		$.post('{pigcms::U('Users/checklogin')}', $login_data, function(rs){
+			if(rs.status == 1)
+			{
+				location.href = '{pigcms::U('User/Index/index')}';
+			}
+			else
+			{
+				$('#err_tips').text(rs.info);
+				$('#err_area').show();
+				$('#login_button').text($pre_submit);
+			}
+			$do_submit = false;
+		}, 'json');
+	}
+</script>
+<script>
+	//alert($);
+	$(function(){
+		(function(){
+			var slider = {
+				flag:false,
+				owner:$("#qrcode")[0],
+				handleEvent: function(evt){
+					var that = this;
+					that.flag = ("mouseover" == evt.type);
+					if(that.flag){
+						params = {opacity:"1", top:"5px"};
+						$("#qrcode_body").addClass("on");
+						$("#switch").addClass("on");
+						slider.owner.removeEventListener("mouseover", slider, false);
+					}else{
+						params = {opacity:"0", top:"-50px"};
+						$("#switch").removeClass("on");
+						slider.owner.removeEventListener("mouseleave", slider, false);
+					}
+
+					$("#qrcode_body").animate(params, 500, "swing", function(){
+						if(that.flag){
+							slider.owner.addEventListener("mouseleave", slider, false);
+						}else{
+							$("#qrcode_body").removeClass("on");
+							slider.owner.addEventListener("mouseover", slider, false);
+						}
+					});
+				}
+			};
+			slider.owner.addEventListener("mouseover", slider, false);
+		})();
+
+	});
+</script>
+<!-- banner -->
