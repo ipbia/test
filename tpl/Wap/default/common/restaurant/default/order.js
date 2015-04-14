@@ -57,7 +57,7 @@
         
       //是否保存用户地址信息
         vm.getSaveinfo = function(){
-        	return vm.setParams('saveinfo');
+        	return vm.getParams('saveinfo');
         }
 
         /**
