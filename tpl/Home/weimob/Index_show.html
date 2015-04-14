@@ -1,0 +1,25 @@
+<include file="Public:header"/>
+<div class="Public-content clearfix">
+	<div class="Public">
+		<h2 class="Public-h1">{pigcms::$title}</h2>
+		<div class="public-info"><a href="/" target="_blank">{pigcms::C('site_name')}</a> |<a>{pigcms:$showtime|date="Y-m-d",###}</a>|<a style="margin-left:20px;">分享到：</a>
+			<div class="bshare-custom" style="display:inline-block; text-indent:0;">
+				<a title="分享到QQ空间" class="bshare-qzone"></a>
+				<a title="分享到微信" class="bshare-weixin"></a>
+				<a title="分享到新浪微博" class="bshare-sinaminiblog"></a>
+				<a title="分享到腾讯微博" class="bshare-qqmb"></a>
+				<a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a>
+			</div><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=412998b3-0ae6-430e-b409-dc6862c125d9&amp;pophcol=1&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script>
+		</div>
+		<div class="Public-box">
+			<div class="Proxy">
+				<p>{pigcms::$content}</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<include file="$includeFooterPath"/>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<include file="Public:header"/>
+<div class="Public-content clearfix">
+	<div class="Public dataTables_wrapper">
+		<h2 class="Public-h1">新闻媒体</h2>
+		<volist name="info" id="vo">
+									<div class="Public-box-news">
+					<div class="Proxy-news">
+						<a href="{pigcms::U('Home/Index/show',array('id'=>$vo['id']))}" style="background:url({pigcms::$vo['imgs']}) no-repeat 0 0; display:block;">
+							<img  src="{pigcms::RES}/images/news-bg.png" name="image1"  onmouseover="this.style.opacity=1;" onmouseout="this.style.opacity=0;" style="opacity:0;" />
+						</a>
+						<h3>{pigcms::$vo['title']}</h3>
+						<p>&nbsp; &nbsp; &nbsp; {pigcms::$vo['description']}...</p>
+					</div>
+				</div>
+</volist>
+							<br style="clear:both;">
+		<div class="dataTables_paginate paging_full_numbers"><span><a class="paginate_active">{pigcms::$page}</a></span></div>	</div>
+</div>
+	</div>
+</div>
+<include file="Public:footer"/>
+</body>
+</html>
