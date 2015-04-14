@@ -38,10 +38,12 @@
        </tr>
 	   
 	    <tr>       
-        <th><span class="red"></span>邮件通知：</th> 
-        <td><input type="text" id="email" name="email" value="{pigcms:$setting.email}" placeholder="如：{pigcms::C('site_email')}" class="px" style="width:250px;" />&nbsp;&nbsp;
+        <th><span class="red"></span>短信通知：</th> 
+        <td>&nbsp;&nbsp;
 	        开启&nbsp;<input type="radio" name="email_status" <if condition="$setting.email_status eq 1">checked</if> id="statu-1" value="1">&nbsp;&nbsp;
-	        关闭&nbsp;<input type="radio" name="email_status" <if condition="$setting.email_status eq 0">checked</if> id="statu-0" value="0"></td> 
+	        关闭&nbsp;<input type="radio" name="email_status" <if condition="$setting.email_status eq 0">checked</if> id="statu-0" value="0">
+	    <span style="color:red;"> 您必须购买短信包才可使用！通知的手机号为LBS中设置的手机号码！</span>
+	    </td> 
        </tr>
 	   	   
        <if condition="$showgroup eq 1">
