@@ -134,6 +134,19 @@
         </td> 
        </tr>
        
+       <tr>
+        <th>二维码名称：</th> 
+        <td><input type="text" id="ewmname"  class="px"/>(如:1号桌,1011编号等)</td> 
+       </tr>
+       
+       <tr>
+        <th></th> 
+        <td >
+        	<a class="a_upload" onclick="generateQRfrom()">点击生成二维码</a>
+        	<div id="ewmimg"></div>
+        </td> 
+       </tr>
+       
        <tr>         
        <th>&nbsp;</th>
        <td>
@@ -155,6 +168,25 @@
   {
 	 $("#tpid, #headerid").val(0);
 	 $("#selecttpl").val('默认模板');
+  }
+  
+  function generateQRfrom(){
+	  var extend = $("#ewmname").val();
+	  if(extend == "" || extend == undefined){
+		  alert("二维码名称不能为空");
+		  return;
+	  }
+	  
+	 var url = "{pigcms::U('Wap/Store/scanQRCode',array('token'=>$this->token,'wecha_id'=>$this->wecha_id))}" + "&extend=" + extend;
+	 $.ajax({
+         type:"post",
+         url:"index.php?g=User&m=Myewm&a=generateQRForAjax",
+         data:{"chl":url},
+			success:function(da){
+				$("#ewmimg").html(da);
+			}
+     });
+	  
   }
 </script>
   <include file="Public:footer" />
