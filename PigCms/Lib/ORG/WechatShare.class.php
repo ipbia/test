@@ -235,16 +235,15 @@ class WechatShare
 		
 	});
 	
-  // 9.1.2 扫描二维码并返回结果
-  function scanQRCode(desc ＝ '扫一扫二维码') {
-    wx.scanQRCode({
-      needResult: 1,
-      desc: '',
-      success: function (res) {
-        alert(JSON.stringify(res));
-      }
-    });
-  }
+	function scanQRCode(desc) {
+	    wx.scanQRCode({
+	      needResult: 1,
+	      desc: '',
+	      success: function (res) {
+	        alert(JSON.stringify(res));
+	      }
+	    });
+	}
 		
 	function shareHandle(to) {
 		var submitData = {
