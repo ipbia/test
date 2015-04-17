@@ -145,12 +145,14 @@ class StoreAction extends WapAction{
 		if(isset($_GET) && $_GET['extend']){
 			$name = $this->token()."_extend";
 			//初始化session设置
-			$name['name'] 	= $name;
-			$name['expire'] = 7200;
-			session($name);
+			$set['name'] 	= $name;
+			$set['expire'] = 7200;
+			session($set);
 			
 			//保存扩展字段
 			session($name, $_GET['extend']);
+			
+			$this->success('扫描成功,正在跳转中...',U('Store/index', array('token'=>$this->token, 'wecha_id'=>$this->wecha_id)));
 		}
 	}
 	

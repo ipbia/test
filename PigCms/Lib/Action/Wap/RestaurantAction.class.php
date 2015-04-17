@@ -994,17 +994,26 @@ class RestaurantAction extends StoreAction{
 				$company_shortname = $company['shortname'];
 				//发送短信提醒
 				
+				$truename = $userInfo['truename'];
+				$setting = $this->_set;
+				if($setting && $setting['paymode'] == '0'){
+					$name = $this->token()."_extend";
+					if(session($name)){
+						$truename = session($name);
+					}
+				}
+				
 				if($order['paid']){
-					Sms::sendSms($this->token, "您的顾客{$userInfo['truename']}刚刚对订单号：{$orderid}的订单进行了支付，请您注意查看并处理【".$company_shortname."】");
+					Sms::sendSms($this->token, "您的顾客{$truename}刚刚对订单号：{$orderid}的订单进行了支付，请您注意查看并处理【".$company_shortname."】");
 					$model = new templateNews();
 					$model->sendTempMsg('TM00820', array('href' => C('site_url').U('Restaurant/orderList',array('token' => $this->token, 'wecha_id' => $this->wecha_id, 'cid' => $this->_cid, 'twid' => $this->_twid)), 'wecha_id' => $this->wecha_id, 'first' => '购买商品提醒', 'keynote1' => '订单已支付', 'keynote2' => date("Y年m月d日H时i分s秒"), 'remark' => '购买成功，感谢您的光临，欢迎下次再次光临！'));
 				}else{
 					if(strtolower($order['paytype']) == strtolower('daofu')){
-						Sms::sendSms($this->token, "您的顾客{$userInfo['truename']}刚刚对订单号：{$orderid}的订单选择[货到付款]，请您注意查看并处理【".$company_shortname."】");
+						Sms::sendSms($this->token, "您的顾客{$truename}刚刚对订单号：{$orderid}的订单选择[货到付款]，请您注意查看并处理【".$company_shortname."】");
 						$model = new templateNews();
 						$model->sendTempMsg('TM00820', array('href' => C('site_url').U('Restaurant/orderList',array('token' => $this->token, 'wecha_id' => $this->wecha_id, 'cid' => $this->_cid, 'twid' => $this->_twid)), 'wecha_id' => $this->wecha_id, 'first' => '购买商品提醒', 'keynote1' => '未支付【货到付款】', 'keynote2' => date("Y年m月d日H时i分s秒"), 'remark' => '购买成功，感谢您的光临，欢迎下次再次光临！'));
 					}else if(strtolower($order['paytype']) == strtolower('dianfu')){
-						Sms::sendSms($this->token, "您的顾客{$userInfo['truename']}刚刚对订单号：{$orderid}的订单选择[到店付款]，请您注意查看并处理【".$company_shortname."】");
+						Sms::sendSms($this->token, "您的顾客{$truename}刚刚对订单号：{$orderid}的订单选择[到店付款]，请您注意查看并处理【".$company_shortname."】");
 						$model = new templateNews();
 						$model->sendTempMsg('TM00820', array('href' => C('site_url').U('Restaurant/orderList',array('token' => $this->token, 'wecha_id' => $this->wecha_id, 'cid' => $this->_cid, 'twid' => $this->_twid)), 'wecha_id' => $this->wecha_id, 'first' => '购买商品提醒', 'keynote1' => '未支付【到店付款】', 'keynote2' => date("Y年m月d日H时i分s秒"), 'remark' => '购买成功，感谢您的光临，欢迎下次再次光临！'));
 					}
