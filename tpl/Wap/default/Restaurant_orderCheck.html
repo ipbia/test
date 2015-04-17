@@ -168,7 +168,7 @@
                             </div>
                             <div class="payChoose">
                                 <ul class="f-cb">
-                                	<li class="choose1">
+                                	<li class="choose1" id="userChoose">
                                         <!--<p style="color: #b9ad7e;">收货人信息</p>-->
                                         <a style="background-color: #b9ad7e;" class="j-user u-btn" id="j-btn-send" href="#"><span style="border-color: #e1dbc4;">收货信息</span></a>
                                     </li>
@@ -320,7 +320,9 @@
         avalon.vm('Order').saveinfo({pigcms:$productSet.paymode});
         //显示收货信息按钮
         if({pigcms:$productSet.paymode}){
-        	$('.choose1').show();
+        	$('#userChoose').show();
+        }else{
+        	$('#userChoose').hide();
         }
 
         $(function() {

@@ -555,9 +555,9 @@ class RestaurantAction extends StoreAction{
 			//如果没扫描二维码或是用户信息失效
 			if(empty($extend_value)){
 				if($this->isAjax()){
-					exit(json_encode(array('status' => false, 'code'=>1001, 'msg'=>'用户信息失效,请重新扫描餐桌上二维码!', 'data'=>null)));
+					exit(json_encode(array('status' => false, 'code'=>1001, 'msg'=>'用户失效,请重新扫描餐桌上二维码!', 'data'=>null)));
 				}else{
-					$this->error('用户信息失效,请重新扫描餐桌上二维码!');
+					$this->error('用户失效,请重新扫描餐桌上二维码!');
 				}
 			}
 		}

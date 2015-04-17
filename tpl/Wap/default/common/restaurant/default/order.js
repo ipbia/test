@@ -57,7 +57,7 @@
         
       //是否保存用户地址信息
         vm.getSaveinfo = function(){
-        	return vm.getParams('saveinfo');
+        	return vm.getParams('saveinfo').value;
         }
 
         /**
@@ -80,14 +80,13 @@
             App.fire(App.event.OrderSubmitting);
             App.api.submitOrder(spec, params, function(json) {
                 if (json.status) {
-                	//用户信息失效，重新扫描
-                	if(json.code == '1001'){
-                		scanQRCode('微信扫一扫餐桌上的二维码!');
-                		return;
-                	}
-                    avalon.vm('Cart').removeAll();
+                	avalon.vm('Cart').removeAll();
                     App.util.fire(App.event.OrderSubmitSuccess, json.data);
                 } else {
+                	//用户信息失效，重新扫描
+                	if(json.code == 1001){
+                		scanQRCode('微信扫一扫餐桌上的二维码!');
+                	}
                     App.util.fire(App.event.OrderSubmitError, json.msg);
                 }
             }, function() {
@@ -317,7 +316,7 @@
          */
         vm.haveUserInfo = function(){
         	//如果不支持外卖，则不用校验用户信息
-        	if(vm.getSaveinfo() == '0'){
+        	if(vm.getSaveinfo() == 0){
         		return true;
         	}
         	
