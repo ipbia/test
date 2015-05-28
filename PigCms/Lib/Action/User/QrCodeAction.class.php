@@ -7,7 +7,7 @@ class QrCodeAction extends BaseAction{
 		if(isset($_POST['chl'])){
 			$chl .= $_POST['chl'];
 		}
-		echo '<img src="http://api.k780.com:88/?app=qr.get&data='.urlencode($chl).'&level=L&size=10"/>';
+		echo '<img src="http://api.k780.com:88/?app=qr.get&data='.urlencode($chl).'&level=L&size=10"/ style="width:100%">';
 	}
 	
 	
