@@ -414,7 +414,7 @@
 </ul>
 <div style=" margin-top:10px">
 	<ul>
-		<li class="pb_10"><img src="{pigcms:$weddingData.qr_code}" style="width:100%;"></li>
+		<li class="pb_10" id="ewmimg"></li>
 		<li class="pb_10"><img src="" style="width:100%;"></li>
 	</ul>
 </div>
@@ -424,6 +424,23 @@
 
 <footer>{pigcms:$weddingData.copyrite}</footer>
 <script type="text/javascript">
+
+var default_url = "{pigcms::U('Wap/Wedding/index',array('token'=>$this->token,'wecha_id'=>$this->wecha_id))}" + "&id=" + {pigcms:$weddingData.id};
+var url = "{pigcms:$weddingData.qr_code}";
+if(url == ""){
+	url = default_url;
+}
+
+
+$.ajax({
+    type:"post",
+    url:"index.php?g=User&m=QrCode&a=generateQRForAjax",
+    data:{"chl":url},
+		success:function(da){
+			$("#ewmimg").html(da);
+		}
+});
+
 window.shareData = {  
             "imgUrl": "{pigcms:$weddingData.picurl}", 
             "timeLineLink": "{pigcms:$f_siteUrl}{pigcms::U('Wap/Wedding/index',array('token'=>htmlspecialchars($_GET['token']),'id'=>htmlspecialchars($_GET['id'])))}",
