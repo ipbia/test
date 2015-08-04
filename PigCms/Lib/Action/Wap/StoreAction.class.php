@@ -41,7 +41,7 @@ class StoreAction extends WapAction{
 		
 		//获取公告
 		$this->notice_model = M('Product_notice');
-		$where = array('token' => session('token'));
+		$where = array('token' => $this->token);
 		$notice_data = $this->notice_model->where($where)->select();
 		if($notice_data != false){
 			$this->assign('notice_data', $notice_data);

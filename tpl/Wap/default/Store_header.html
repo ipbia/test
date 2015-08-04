@@ -53,47 +53,4 @@ $(document).ready(function(){
 </volist>
 </ul>
 
-<div class="store_notice" style="background:#FCF6DC;font-family:宋体;height:20px;">
-<div style="position:relative ;float:left;vertical-align:center;">&nbsp;&nbsp;&nbsp;&nbsp;<img src="/tpl/static/store/notice.png"/>&nbsp;公告: &nbsp;&nbsp;</div> 
-<script>
-    var marqueeContent=new Array();
-    <volist name="notice_data" id="notice"> 
-    	marqueeContent[{pigcms:$i-1}]='<a href="{pigcms:$notice.url}" target="_blank">{pigcms:$notice.content}</a>';
-    </volist>    
-    
-    var marqueeInterval=new Array();
-    var marqueeId=0;
-    var marqueeDelay=4000;
-    var marqueeHeight=18;
-    function initMarquee() {
-     var str=marqueeContent[0];
-     document.write('<div id="marqueeBox" style="position:relative;vertical-align:center;overflow:hidden;height:'+marqueeHeight+'px" onmouseover="clearInterval(marqueeInterval[0])" onmouseout="marqueeInterval[0]=setInterval(\'startMarquee()\',marqueeDelay)"><div>'+str+'</div></div>');
-     marqueeId++;
-     marqueeInterval[0]=setInterval("startMarquee()",marqueeDelay);
-     }
-    function startMarquee() {
-     var str=marqueeContent[marqueeId];
-      marqueeId++;
-     if(marqueeId>=marqueeContent.length) marqueeId=0;
-     if(marqueeBox.childNodes.length==1) {
-      var nextLine=document.createElement('DIV');
-      nextLine.innerHTML=str;
-      marqueeBox.appendChild(nextLine);
-      }
-     else {
-      marqueeBox.childNodes[0].innerHTML=str;
-      marqueeBox.appendChild(marqueeBox.childNodes[0]);
-      marqueeBox.scrollTop=0;
-      }
-     clearInterval(marqueeInterval[1]);
-     marqueeInterval[1]=setInterval("scrollMarquee()",10);
-     }
-    function scrollMarquee() {
-     marqueeBox.scrollTop++;
-     if(marqueeBox.scrollTop%marqueeHeight==marqueeHeight){
-      clearInterval(marqueeInterval[1]);
-      }
-     }
-    initMarquee();
-    </script>
-</div>
+<include file="Store:notice_header" />
