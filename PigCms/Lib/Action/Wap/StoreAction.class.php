@@ -21,8 +21,8 @@ class StoreAction extends WapAction{
 	{
 		$agent = $_SERVER['HTTP_USER_AGENT'];
 		if(!strpos($agent,"MicroMessenger")) {
-			echo '非法操作,请在微信中访问!';
-			exit;
+			//echo '非法操作,请在微信中访问!';
+			//exit;
 		}
 		
 		parent::_initialize();
@@ -41,7 +41,8 @@ class StoreAction extends WapAction{
 		
 		//获取公告
 		$this->notice_model = M('Product_notice');
-		$notice_data = $this->notice_model->select();
+		$where = array('token' => session('token'));
+		$notice_data = $this->notice_model->where($where)->select();
 		if($notice_data != false){
 			$this->assign('notice_data', $notice_data);
 		}
