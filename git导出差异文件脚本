@@ -1,2 +1,2 @@
 1.cd 到 项目目录
-2.git diff 4d86546 ac6f87b --name-status | xargs zip update.zip
+2.git diff 9a651b7 c18ed79 --name-status | xargs zip update.zip

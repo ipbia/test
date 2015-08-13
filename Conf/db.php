@@ -7,5 +7,6 @@ return array (
   'DB_USER' => 'root',
   'DB_PWD' => '',
   'DB_PREFIX' => 'tp_',
+  'agent_version'=>'1',
 );
 ?>
