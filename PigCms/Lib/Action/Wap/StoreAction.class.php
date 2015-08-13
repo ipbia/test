@@ -133,7 +133,7 @@ class StoreAction extends WapAction{
 	//分享
 	public function share(){
 		$share 	= new WechatShare($this->wxuser['appid'],$this->wxuser['appsecret'],$this->token,$this->wecha_id);
-		//$share->hideOutShare();
+		$share->hideOutShare();
 		$this->shareScript=$share->getSgin();
 		$this->assign('shareScript',$this->shareScript);
 	}
